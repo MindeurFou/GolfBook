@@ -6,22 +6,13 @@
     android:layout_height="match_parent"
     android:padding="4dp"
     tools:context=".MainActivity"
-    android:background="@color/primaryDarkColor">
-
-    <ImageView
-        android:layout_width="72dp"
-        android:layout_height="60dp"
-        android:src="@drawable/golf_cart_small"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="@color/primaryColor">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
+        style="@style/TextAppearance.GolfBook.Guidelines"
         android:layout_marginTop="120dp"
         android:text="@string/emptyNameHeader1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +24,7 @@
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.GolfBook.TextInputLayout"
         android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
@@ -64,6 +56,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TextAppearance.GolfBook.Body1"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"

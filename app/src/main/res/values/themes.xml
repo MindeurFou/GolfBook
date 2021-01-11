@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.GolfBook" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.GolfBook" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
@@ -13,4 +13,42 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 
     </style>
+
+    <style name="Widget.GolfBook.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextAppearance">@style/TextAppearance.GolfBook.TextInputLayout.HintText</item>
+        <item name="android:textColorHint">@color/primaryTextColor</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="boxStrokeColor">@color/secondaryLightColor</item>
+    </style>
+
+    <style name="TextAppearance.GolfBook.TextInputLayout.HintText" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="Widget.GolfBook.RoundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="TextAppearance.GolfBook.Title" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="fontFamily">@font/days_one</item>
+    </style>
+
+    <style name="TextAppearance.GolfBook.Guidelines" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/days_one</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.GolfBook.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/days_one</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>
