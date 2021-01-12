@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.golfbook.R
-import kotlinx.android.synthetic.main.item_leaderboard.view.*
 
 class LeaderBoardItem(context: Context): ConstraintLayout(context) {
 
@@ -12,10 +11,10 @@ class LeaderBoardItem(context: Context): ConstraintLayout(context) {
     val par: TextView
 
     init {
-        inflate(context, R.layout.item_leaderboard, this)
+        val view = inflate(context, R.layout.item_leaderboard, this)
 
-        name = leaderBoardName
-        par = leaderBoardPar
+        name = view.findViewById(R.id.leaderBoardName)
+        par = view.findViewById(R.id.leaderBoardPar)
     }
 
 

@@ -20,4 +20,14 @@
 
 
     <string name="nameEditText">Entrez votre nom</string>
+    <string name="btnUpdatePlayer">Changer l\'avatar</string>
+    <string name="btnAddCourse">Ajouter un parcours</string>
+    <string name="btnManageOtherPlayer">+</string>
+    <string name="scoreString">Score</string>
+    <string name="validate">Valider</string>
+    <string name="choosePlayerError">Veuillez remplir correctement les informations</string>
+    <string name="playersTitle">Joueurs :</string>
+    <string name="courseTitle">Parcours :</string>
+    <string name="startGame">Commencer</string>
+    <string name="loungeName">Salon n°%1$d</string>
 </resources>

@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/primaryColor">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/loungeRecyclerView"
+
+    <HorizontalScrollView
+        android:id="@+id/loungeScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="96dp"
@@ -18,26 +19,88 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/loungeContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageAvatarHome"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="44dp"
         android:src="@drawable/man5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/btnUpdatePlayer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loungeScrollView" />
 
     <TextView
+        android:id="@+id/avatarName"
+        style="@style/TextAppearance.GolfBook.Guidelines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.GolfBook.Guidelines"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageAvatarHome"
+        app:layout_constraintStart_toEndOf="@+id/imageAvatarHome"
         tools:text="Patrick" />
+
+    <Button
+        android:id="@+id/btnUpdatePlayer"
+        style="@style/Widget.GolfBook.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btnUpdatePlayer"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/avatarName"
+        app:layout_constraintStart_toStartOf="@+id/imageAvatarHome"
+        app:layout_constraintTop_toBottomOf="@+id/imageAvatarHome" />
+
+    <Button
+        android:id="@+id/btnAddCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.GolfBook.Button"
+        android:text="@string/btnAddCourse"
+        app:layout_constraintBottom_toTopOf="@+id/loungeScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnManageOtherPlayer"
+        style="@style/Widget.GolfBook.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btnManageOtherPlayer"
+        app:layout_constraintBottom_toBottomOf="@+id/btnUpdatePlayer"
+        app:layout_constraintEnd_toEndOf="@+id/managedPlayerLayout"
+        app:layout_constraintStart_toStartOf="@+id/managedPlayerLayout"
+        app:layout_constraintTop_toTopOf="@+id/btnUpdatePlayer" />
+
+    <TableLayout
+        android:id="@+id/managedPlayerLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loungeScrollView"
+        app:layout_constraintStart_toEndOf="@id/btnUpdatePlayer"
+        app:layout_constraintBottom_toTopOf="@id/btnManageOtherPlayer"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

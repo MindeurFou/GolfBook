@@ -17,6 +17,15 @@
     <style name="Widget.GolfBook.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="hintTextAppearance">@style/TextAppearance.GolfBook.TextInputLayout.HintText</item>
         <item name="android:textColorHint">@color/primaryTextColor</item>
+        <item name="hintTextColor">@color/secondaryLightColor</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="boxStrokeColor">@color/secondaryLightColor</item>
+    </style>
+
+    <style name="Widget.GolfBook.TextInputLayoutScore" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="hintTextAppearance">@style/TextAppearance.GolfBook.TextInputLayout.HintText</item>
+        <item name="android:textColorHint">@color/primaryTextColor</item>
+        <item name="hintTextColor">@color/secondaryColor</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="boxStrokeColor">@color/secondaryLightColor</item>
     </style>
@@ -53,6 +62,12 @@
 
     <style name="Widget.GolfBook.RecyclerView" parent="">
         <item name="background">@drawable/individual_recyclerview_background</item>
+    </style>
+
+    <style name="Widget.GolfBook.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:backgroundTint">@color/secondaryLightColor</item>
+        <item name="elevation">8dp</item>
     </style>
 
 </resources>

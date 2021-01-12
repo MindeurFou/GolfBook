@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.golfbook.R
+import com.example.golfbook.databinding.FragmentFinishBinding
 import com.example.golfbook.databinding.FragmentHomeBinding
 import com.example.golfbook.model.Player
 import com.example.golfbook.ui.compoundedComponents.LoungeItem
@@ -18,29 +19,21 @@ import com.example.golfbook.ui.compoundedComponents.LoungeItem
 
 class FinishFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var binding: FragmentFinishBinding
 
-    private val args: HomeFragmentArgs by navArgs()
+    private val args:  by navArgs()
 
-    private lateinit var viewModelFactory: HomeViewModelFactory
+    private lateinit var viewModelFactory: FinishViewModelFactory
 
-    private val viewModel: HomeViewModel by viewModels(
+    private val viewModel: FinishViewModel by viewModels(
         factoryProducer = { viewModelFactory }
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentFinishBinding.inflate(inflater)
 
-        viewModelFactory = HomeViewModelFactory(args)
-
-
-        for (i in 1..3) {
-
-            val itemLounge = LoungeItem(requireContext(), i)
-
-            binding.loungeContainer.addView(itemLounge)
-        }
+        viewModelFactory = FinishViewModelFactory(args)
 
 
         val observer = Observer<HomeViewState> { viewState ->

@@ -1,4 +1,4 @@
-package com.example.golfbook.ui
+package com.example.golfbook.ui.splash
 
 import android.os.Bundle
 import android.os.Handler
@@ -16,9 +16,16 @@ class SplashFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_splash, container, false)
 
         Handler().postDelayed({
-            findNavController().navigate(R.id.action_splashFragment_to_chooseAvatarFragment)
+
+            val action = SplashFragmentDirections.actionSplashFragmentToChooseAvatarFragment( isMainPlayer = true)
+
+            findNavController().navigate(action)
         }, 3000)
 
         return view
     }
+
+
+
+
 }

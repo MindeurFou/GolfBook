@@ -8,12 +8,12 @@ import com.example.golfbook.model.Player
 import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
-class HomeViewModelFactory(private val args: HomeFragmentArgs) : ViewModelProvider.Factory {
+class FinishViewModelFactory(private val args: ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)){
-            return HomeViewModel(args) as T
+        if (modelClass.isAssignableFrom(FinishViewModel::class.java)){
+            return FinishViewModel(args) as T
         }
 
         throw IllegalArgumentException("Unknown modelView class")
@@ -21,7 +21,7 @@ class HomeViewModelFactory(private val args: HomeFragmentArgs) : ViewModelProvid
 
 }
 
-class HomeViewModel(args: HomeFragmentArgs) : ViewModel() {
+class FinishViewModel(args: ) : ViewModel() {
 
     private val _viewState: MutableLiveData<HomeViewState> = MutableLiveData()
     val viewState: LiveData<HomeViewState> = _viewState

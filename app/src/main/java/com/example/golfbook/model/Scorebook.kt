@@ -1,4 +1,5 @@
 package com.example.golfbook.model
 
-class Scorebook {
-}
+data class Scorebook(
+    var scoreBook: Map<Player, MutableMap<Hole, Int>>
+)

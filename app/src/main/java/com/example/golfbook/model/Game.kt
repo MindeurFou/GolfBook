@@ -1,14 +1,19 @@
 package com.example.golfbook.model
 
+import android.os.Parcelable
+import androidx.versionedparcelable.ParcelField
+import androidx.versionedparcelable.VersionedParcelize
+import kotlinx.android.parcel.Parcelize
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
+@Parcelize
 data class Game (
     val players: List<Player>,
     val course: Course,
-    var scoreBook: Map<Player, MutableMap<Hole, Int>>,
+    var scoreBook: Map<Player, MutableMap<Hole, Int>>, // TODO mettre scorebook dans une classe pour centraliser les fonctions de traitements
     var currentHole: Hole
-    ) {
+    ) : Parcelable {
 
 
     fun initScoreBook() {

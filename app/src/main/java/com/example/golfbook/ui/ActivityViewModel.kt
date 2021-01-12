@@ -1,4 +1,6 @@
 package com.example.golfbook.ui
 
-class ActivityViewModel {
+import androidx.lifecycle.ViewModel
+
+class ActivityViewModel : ViewModel() {
 }
