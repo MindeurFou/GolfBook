@@ -6,24 +6,24 @@ import java.lang.IllegalArgumentException
 data class Game (
     val players: List<Player>,
     val course: Course,
-    var scoreBook: Map<Hole, MutableMap<Player, Int>>,
+    var scoreBook: Map<Player, MutableMap<Hole, Int>>,
     var currentHole: Hole
     ) {
 
 
     fun initScoreBook() {
 
-        val _scoreBook: MutableMap<Hole, MutableMap<Player, Int>> = mutableMapOf()
+        val _scoreBook: MutableMap<Player, MutableMap<Hole, Int>> = mutableMapOf()
 
-        for (hole in course.holes) {
+        for (player in players) {
 
-            val _holeMap: MutableMap<Player, Int> = mutableMapOf()
+            val _holeMap: MutableMap<Hole, Int> = mutableMapOf()
 
-            for (player in players) {
-                _holeMap[player] = -1
+            for (Hole in course.holes) {
+                _holeMap[Hole] = -1
             }
 
-            _scoreBook[hole] = _holeMap
+            _scoreBook[player] = _holeMap
         }
 
         scoreBook = _scoreBook
@@ -36,32 +36,32 @@ data class Game (
         if (score < 1)
             throw IllegalArgumentException("Score can't be less than 1")
 
-        scoreBook[hole]?.let { scoreForHole ->
+        scoreBook[player]?.let { scoreForHole ->
 
-            scoreForHole[player]?.let {
+            scoreForHole[hole]?.let {
 
                 if (it != -1 && !wantToChange)
                     throw IllegalAccessException("There is already a score here")
 
 
-            } ?: throw Exception("The player couldn't be find")
+            } ?: throw Exception("The hole couldn't be find")
 
-            scoreForHole[player]= score
+            scoreForHole[hole]= score
             updateCurrentHole()
 
-        } ?: throw Exception("The hole couldn't be find")
+        } ?: throw Exception("The player couldn't be find")
     }
 
     private fun updateCurrentHole() {
 
-        val holeIsComplete = scoreBook[currentHole]?.all {
+        /*val holeIsComplete = scoreBook[currentHole]?.all {
             it.value != -1
         }
 
         holeIsComplete ?: throw Exception("The currentHole couldn't be find")
 
         if (holeIsComplete)
-            currentHole = course.getNextHole(currentHole)
+            currentHole = course.getNextHole(currentHole)*/
     }
 
 }

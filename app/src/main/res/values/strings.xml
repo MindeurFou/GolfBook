@@ -4,8 +4,20 @@
 
     <string name="emptyNameHeader1">Salut le petit nouveau ! Choisis-toi un nom !</string>
     <string name="emptyNameHeader2">On ne se connait pas ? Comment tu veux t\'appeler ?</string>
+
+    <string-array name="emptyNameHeader">
+        <item>@string/emptyNameHeader1</item>
+        <item>@string/emptyNameHeader2</item>
+    </string-array>
+
     <string name="knownNameHeader1">Encore toi ? Ton nom te plaît toujours ?</string>
     <string name="knownNameHeader2">Franchement tu peux faire mieux… Choisis un nouveau nom !</string>
+
+    <string-array name="knownNameHeader">
+        <item>@string/knownNameHeader1</item>
+        <item>@string/knownNameHeader2</item>
+    </string-array>
+
 
     <string name="nameEditText">Entrez votre nom</string>
 </resources>

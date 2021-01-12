@@ -101,3 +101,8 @@
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
+.idea/navEditor.xml
+.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_2_0_aar.xml
+.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_ktx_2_2_0_aar.xml
+.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_2_0_alpha02_aar.xml
+.idea/libraries/Gradle__androidx_viewpager2_viewpager2_1_1_0_alpha01_aar.xml

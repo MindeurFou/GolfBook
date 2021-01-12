@@ -51,4 +51,8 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Widget.GolfBook.RecyclerView" parent="">
+        <item name="background">@drawable/individual_recyclerview_background</item>
+    </style>
+
 </resources>
