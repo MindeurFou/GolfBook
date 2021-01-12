@@ -1,4 +1,4 @@
-package com.example.golfbook.ui
+package com.example.golfbook.ui.game
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.golfbook.R
 import com.example.golfbook.model.Player
 import com.example.golfbook.ui.adapters.IndividualGameViewPagerAdapter
-import kotlinx.android.synthetic.main.fragment_view_pager.view.*
 
 class GameViewPagerFragment : Fragment() {
 
@@ -19,7 +18,7 @@ class GameViewPagerFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_view_pager, container, false)
 
-        viewPager = view.viewPager
+        viewPager = view.findViewById(R.id.viewPager)
 
         val players = listOf<Player>()
 

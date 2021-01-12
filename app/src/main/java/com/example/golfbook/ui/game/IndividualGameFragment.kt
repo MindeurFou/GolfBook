@@ -1,4 +1,4 @@
-package com.example.golfbook.ui
+package com.example.golfbook.ui.game
 
 import android.os.Bundle
 import android.view.LayoutInflater
