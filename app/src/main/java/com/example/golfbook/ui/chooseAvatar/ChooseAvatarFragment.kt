@@ -1,6 +1,5 @@
 package com.example.golfbook.ui.chooseAvatar
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.golfbook.R
 import com.example.golfbook.databinding.FragmentChooseAvatarBinding
-import com.example.golfbook.model.Player
+import com.example.golfbook.data.model.Player
 import kotlin.random.Random
 
 class ChooseAvatarFragment : Fragment() {
@@ -66,7 +65,7 @@ class ChooseAvatarFragment : Fragment() {
             if (name == null || player.avatarResourceId == -1) {
                 Toast.makeText(requireContext(), R.string.choosePlayerError, Toast.LENGTH_LONG).show()
             } else{
-                navigateToHomeFragment(name, player.avatarResourceId, args.isMainPlayer)
+                navigateToHomeFragment(player)
             }
 
         }
@@ -79,7 +78,7 @@ class ChooseAvatarFragment : Fragment() {
 
         val text: String?
 
-        if (args.name == "null") {
+        if (args.player?.name == null ) {
 
             val textArray: Array<String> = requireContext().resources.getStringArray(R.array.emptyNameHeader)
             val index = Random.nextInt(textArray.size)
@@ -95,8 +94,8 @@ class ChooseAvatarFragment : Fragment() {
         binding.chooseNameTitle.text = text
     }
 
-    private fun navigateToHomeFragment( name: String, resourceId: Int, isMainPlayer: Boolean) {
-        val action = ChooseAvatarFragmentDirections.actionChooseAvatarFragmentToHomeFragment(name, resourceId, isMainPlayer)
+    private fun navigateToHomeFragment( player: Player) {
+        val action = ChooseAvatarFragmentDirections.actionChooseAvatarFragmentToHomeFragment(player)
         findNavController().navigate(action)
     }
 

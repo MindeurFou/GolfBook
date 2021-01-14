@@ -1,12 +1,9 @@
 package com.example.golfbook.ui.chooseAvatar
 
-import android.view.View
-import android.widget.ImageView
 import androidx.lifecycle.*
 import com.example.golfbook.R
-import com.example.golfbook.model.Player
+import com.example.golfbook.data.model.Player
 import java.lang.IllegalArgumentException
-import kotlin.random.Random
 
 @Suppress("UNCHECKED_CAST")
 class ChooseAvatarViewModelFactory(private val args: ChooseAvatarFragmentArgs) : ViewModelProvider.Factory {
@@ -30,27 +27,9 @@ class ChooseAvatarViewModel(args: ChooseAvatarFragmentArgs) : ViewModel() {
 
     init {
 
-        if ( args.isMainPlayer ) {
+            val player = args.player ?: Player(null, R.drawable.man1, args.isMainPlayer)
 
-            val name = if( args.name == "null"){
-                null
-            } else {
-                args.name
-            }
-
-            val resourceId = if (args.drawableResource == -1) {
-                R.drawable.man1
-            } else {
-                args.drawableResource
-            }
-
-            _viewState.value = Player(
-                name = name,
-                avatarResourceId = resourceId
-            )
-
-        }
-
+            _viewState.value = player
 
     }
 

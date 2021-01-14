@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.golfbook.model.Player
+import com.example.golfbook.data.model.Player
 import com.example.golfbook.ui.game.GameIndividualPageFragment
 
 class IndividualGameViewPagerAdapter(

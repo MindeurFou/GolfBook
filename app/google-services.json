@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "20489973286",
+    "project_id": "golfbook-da3ce",
+    "storage_bucket": "golfbook-da3ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20489973286:android:8c7051bac7dd419f6f00e7",
+        "android_client_info": {
+          "package_name": "com.example.golfbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20489973286-qm12hhsbl4ea8gbem7smc3qqbeelm4vh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWS6KuVjFCPIbtv8up5j4S4BaC7r3VfGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20489973286-qm12hhsbl4ea8gbem7smc3qqbeelm4vh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

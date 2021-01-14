@@ -1,6 +1,6 @@
 package com.example.golfbook.extensions
 
-import com.example.golfbook.model.Player
+import com.example.golfbook.data.model.Player
 
 class CollectionsExtensions {
 

@@ -1,4 +1,5 @@
-package com.example.golfbook.model
+package com.example.golfbook.data.model
+
 
 data class Course(
     var name: String,

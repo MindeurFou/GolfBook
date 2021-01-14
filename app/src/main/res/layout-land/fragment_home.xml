@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/loungeContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnAddCourse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnUpdatePlayer"
+        style="@style/Widget.GolfBook.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/btnUpdatePlayer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnAddCourse"
+        app:layout_constraintStart_toStartOf="@+id/btnAddCourse" />
+
+    <Button
+        android:id="@+id/btnAddCourse"
+        style="@style/Widget.GolfBook.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/btnAddCourse"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnManageOtherPlayer"
+        style="@style/Widget.GolfBook.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/btnManageOtherPlayer"
+        app:layout_constraintBottom_toTopOf="@+id/imageAvatarHome"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TableLayout
+        android:id="@+id/managedPlayerLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/btnAddCourse"
+        app:layout_constraintEnd_toEndOf="@id/btnManageOtherPlayer"
+        app:layout_constraintTop_toBottomOf="@id/btnAddCourse"
+        app:layout_constraintBottom_toTopOf="@id/btnManageOtherPlayer"
+        android:layout_margin="8dp"/>
+
+    <ImageView
+        android:id="@+id/imageAvatarHome"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/man1"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintEnd_toStartOf="@id/avatarName"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdatePlayer"
+        app:layout_constraintStart_toStartOf="@+id/btnUpdatePlayer" />
+
+    <TextView
+        android:id="@+id/avatarName"
+        style="@style/TextAppearance.GolfBook.Guidelines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageAvatarHome"
+        app:layout_constraintEnd_toEndOf="@+id/btnUpdatePlayer"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageAvatarHome"
+        app:layout_constraintTop_toTopOf="@+id/imageAvatarHome"
+        app:layout_constraintVertical_bias="0.8"
+        tools:text="Patrick" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

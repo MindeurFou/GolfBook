@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.golfbook.databinding.FragmentGameIndividualBinding
-import com.example.golfbook.model.Player
+import com.example.golfbook.data.model.Player
 import com.example.golfbook.ui.adapters.IndividualScoreboardAdapter
 
 
@@ -39,7 +39,7 @@ class GameIndividualPageFragment(val player: Player) : Fragment() {
 
         // ======== Score ===========
         binding.scoreboard.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.scoreboard.adapter = IndividualScoreboardAdapter(viewModel.game!!.scoreBook[player]!!)
+        binding.scoreboard.adapter = IndividualScoreboardAdapter(viewModel.game.scoreBook!![player]!!)
 
 
         viewModel.liveScoreBook.observe(viewLifecycleOwner) { updateScores() }

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="200dp"
     android:layout_height="match_parent"
-    android:background="@drawable/individual_recyclerview_background"
-    android:padding="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/lounge_recyclerview_background"
+    android:padding="8dp">
 
     <TextView
-        android:id="@+id/LoungeTitle"
+        android:id="@+id/loungeTitle"
         style="@style/TextAppearance.GolfBook.Guidelines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoungeTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/loungeTitle" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputCourse"
@@ -49,7 +49,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextCourse"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,12 +83,35 @@
         style="@style/Widget.GolfBook.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/startGame"
         android:layout_marginBottom="24dp"
+        android:text="@string/startGame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnJoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_join"
+        android:backgroundTint="@color/secondaryLightColor"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnStartGame"
+        app:layout_constraintEnd_toStartOf="@+id/btnLeave"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnLeave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_quit"
+        android:backgroundTint="@color/secondaryLightColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnJoin"
+        app:layout_constraintTop_toTopOf="@+id/btnJoin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

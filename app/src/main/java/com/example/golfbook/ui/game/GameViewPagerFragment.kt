@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.golfbook.R
-import com.example.golfbook.model.Player
+import com.example.golfbook.data.model.Player
 import com.example.golfbook.ui.adapters.IndividualGameViewPagerAdapter
 
 class GameViewPagerFragment : Fragment() {

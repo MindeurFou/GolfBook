@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.golfbook.R
-import com.example.golfbook.model.Hole
+import com.example.golfbook.data.model.Hole
 import com.google.android.material.textfield.TextInputEditText
-import java.lang.Exception
 
 class IndividualRecyclerViewViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 

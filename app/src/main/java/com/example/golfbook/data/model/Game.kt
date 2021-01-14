@@ -1,19 +1,15 @@
-package com.example.golfbook.model
+package com.example.golfbook.data.model
 
-import android.os.Parcelable
-import androidx.versionedparcelable.ParcelField
-import androidx.versionedparcelable.VersionedParcelize
-import kotlinx.android.parcel.Parcelize
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
-@Parcelize
+
 data class Game (
     val players: List<Player>,
     val course: Course,
-    var scoreBook: Map<Player, MutableMap<Hole, Int>>, // TODO mettre scorebook dans une classe pour centraliser les fonctions de traitements
+    var scoreBook: Map<Player, MutableMap<Hole, Int>>? = null, // TODO mettre scorebook dans une classe pour centraliser les fonctions de traitements
     var currentHole: Hole
-    ) : Parcelable {
+    ) {
 
 
     fun initScoreBook() {
@@ -41,7 +37,7 @@ data class Game (
         if (score < 1)
             throw IllegalArgumentException("Score can't be less than 1")
 
-        scoreBook[player]?.let { scoreForHole ->
+        scoreBook!![player]?.let { scoreForHole ->
 
             scoreForHole[hole]?.let {
 

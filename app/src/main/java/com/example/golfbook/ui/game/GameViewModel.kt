@@ -4,11 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.golfbook.model.Game
-import com.example.golfbook.model.Hole
-import com.example.golfbook.model.Player
-import com.example.golfbook.model.Scorebook
-import com.example.golfbook.ui.GameViewPagerFragmentArgs
+import com.example.golfbook.data.model.*
 import java.lang.IllegalArgumentException
 
 
@@ -35,11 +31,17 @@ class GameViewModel(args: GameViewPagerFragmentArgs) : ViewModel() {
     val game: Game = Game(
         players = TODO(),
         course = TODO(),
-        scoreBook = Scorebook(),
         currentHole = TODO()
     )
 
     init {
+
+        val lounge: Lounge = args.lounge
+
+        game.course = lounge.course as Course
+
+        game.players = lounge.players!!
+        game.initScoreBook()
 
         _scorebook.value = TODO()
     }

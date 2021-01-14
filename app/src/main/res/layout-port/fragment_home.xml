@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryColor">
+    android:background="@color/primaryColor"
+    tools:ignore="MissingDefaultResource">
 
-
-    <HorizontalScrollView
-        android:id="@+id/loungeScrollView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/loungeContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="96dp"
@@ -19,24 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/loungeContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
-
-
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/imageAvatarHome"
@@ -46,7 +29,7 @@
         android:src="@drawable/man5"
         app:layout_constraintBottom_toTopOf="@id/btnUpdatePlayer"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loungeScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/loungeContainer" />
 
     <TextView
         android:id="@+id/avatarName"
@@ -77,7 +60,7 @@
         android:layout_height="wrap_content"
         style="@style/Widget.GolfBook.Button"
         android:text="@string/btnAddCourse"
-        app:layout_constraintBottom_toTopOf="@+id/loungeScrollView"
+        app:layout_constraintBottom_toTopOf="@+id/loungeContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +82,7 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loungeScrollView"
+        app:layout_constraintTop_toBottomOf="@id/loungeContainer"
         app:layout_constraintStart_toEndOf="@id/btnUpdatePlayer"
         app:layout_constraintBottom_toTopOf="@id/btnManageOtherPlayer"/>
 

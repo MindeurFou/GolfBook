@@ -1,4 +1,4 @@
-package com.example.golfbook.model
+package com.example.golfbook.data.model
 
 data class Hole (
     val holeNumber: Int,
