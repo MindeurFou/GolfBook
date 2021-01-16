@@ -51,7 +51,7 @@ class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     if (players.size == 1)
                         Toast.makeText(view.context, R.string.lonelyPlayer, Toast.LENGTH_LONG).show()
                     else {
-                        val action = HomeFragmentDirections.actionHomeFragmentToGameViewPagerFragment(lounge)
+                        val action = HomeFragmentDirections.actionHomeFragmentToGameViewPagerFragment("bite")
                         view.findNavController().navigate(action)
                     }
 
@@ -66,10 +66,11 @@ class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 }
 
 class LoungeAdapter(
-        private val viewmodel: HomeViewModel
+       private val joinLounge: (lounge: Lounge) -> Unit,
+       private val leaveLounge: (lounge: Lounge) -> Unit,
 ) : RecyclerView.Adapter<LoungeViewHolder>() {
 
-    private var lounges: List<Lounge> = viewmodel.viewState.value!!.lounges
+    private var lounges: List<Lounge> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoungeViewHolder {
 
@@ -83,9 +84,8 @@ class LoungeAdapter(
         val lounge = lounges[position]
         holder.bind(lounge)
 
-        holder.btnJoin.setOnClickListener { viewmodel.setHomeEvent(HomeEvent.JoinLoungeEvent(lounge)) }
-
-        holder.btnLeave.setOnClickListener { viewmodel.setHomeEvent(HomeEvent.LeaveLoungeEvent(lounge)) }
+        holder.btnJoin.setOnClickListener { joinLounge(lounge) }
+        holder.btnLeave.setOnClickListener { leaveLounge(lounge) }
 
     }
 

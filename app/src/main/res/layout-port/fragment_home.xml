@@ -25,10 +25,10 @@
         android:id="@+id/imageAvatarHome"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="44dp"
         android:src="@drawable/man5"
+        app:layout_constraintEnd_toStartOf="@id/avatarName"
         app:layout_constraintBottom_toTopOf="@id/btnUpdatePlayer"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/btnUpdatePlayer"
         app:layout_constraintTop_toBottomOf="@+id/loungeContainer" />
 
     <TextView
@@ -39,6 +39,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageAvatarHome"
+        app:layout_constraintEnd_toEndOf="@+id/btnUpdatePlayer"
         app:layout_constraintStart_toEndOf="@+id/imageAvatarHome"
         tools:text="Patrick" />
 
@@ -48,11 +49,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btnUpdatePlayer"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/avatarName"
-        app:layout_constraintStart_toStartOf="@+id/imageAvatarHome"
-        app:layout_constraintTop_toBottomOf="@+id/imageAvatarHome" />
+        app:layout_constraintEnd_toStartOf="@id/btnManageOtherPlayer"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnAddCourse"
@@ -73,7 +73,7 @@
         android:text="@string/btnManageOtherPlayer"
         app:layout_constraintBottom_toBottomOf="@+id/btnUpdatePlayer"
         app:layout_constraintEnd_toEndOf="@+id/managedPlayerLayout"
-        app:layout_constraintStart_toStartOf="@+id/managedPlayerLayout"
+        app:layout_constraintStart_toEndOf="@id/btnUpdatePlayer"
         app:layout_constraintTop_toTopOf="@+id/btnUpdatePlayer" />
 
     <TableLayout

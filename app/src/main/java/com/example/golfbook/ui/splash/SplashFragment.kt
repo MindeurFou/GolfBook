@@ -18,8 +18,10 @@ class SplashFragment : Fragment() {
         Handler().postDelayed({
 
             val action = SplashFragmentDirections.actionSplashFragmentToChooseAvatarFragment(
-                    isMainPlayer = true,
-                    player = null
+                    name = null,
+                    drawableResourceId = -1,
+                    managerId = null,
+                    playerId = null
             )
 
             findNavController().navigate(action)

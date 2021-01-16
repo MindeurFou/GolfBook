@@ -33,7 +33,7 @@ class GameIndividualPageFragment(val player: Player) : Fragment() {
 
         // ======== Avatar ===========
         binding.name.text = player.name
-        binding.imageAvatar.setImageDrawable(requireContext().getDrawable(player.avatarResourceId))
+        binding.imageAvatar.setImageDrawable(requireContext().getDrawable(player.drawableResourceId))
 
 
 

@@ -32,14 +32,11 @@ class FinishFragment : Fragment() {
 
 
 
-
-
-
         return binding.root
     }
 
     private fun navigateToHomeFragment(player: Player, isMainPlayer: Boolean) {
-        val action = FinishFragmentDirections.actionFinishFragmentToHomeFragment(Player("patrick", -1, true))
+        val action = FinishFragmentDirections.actionFinishFragmentToHomeFragment("patrick")
         findNavController().navigate(action)
     }
 }

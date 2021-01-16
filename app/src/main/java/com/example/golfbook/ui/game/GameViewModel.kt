@@ -36,14 +36,14 @@ class GameViewModel(args: GameViewPagerFragmentArgs) : ViewModel() {
 
     init {
 
-        val lounge: Lounge = args.lounge
+        val gameId = args.gameId
 
-        game.course = lounge.course as Course
+        /*game.course = lounge.course as Course
 
         game.players = lounge.players!!
         game.initScoreBook()
 
-        _scorebook.value = TODO()
+        _scorebook.value = TODO()*/
     }
 
 

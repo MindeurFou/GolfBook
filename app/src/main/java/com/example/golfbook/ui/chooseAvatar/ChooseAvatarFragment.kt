@@ -1,19 +1,33 @@
 package com.example.golfbook.ui.chooseAvatar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.navArgument
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.golfbook.R
 import com.example.golfbook.databinding.FragmentChooseAvatarBinding
 import com.example.golfbook.data.model.Player
+import com.example.golfbook.extensions.ExceptionExtensions.toast
+import com.example.golfbook.extensions.ViewExtensions.textChanges
+import com.example.golfbook.ui.home.HomeEvent
+import com.example.golfbook.utils.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlin.random.Random
 
 class ChooseAvatarFragment : Fragment() {
@@ -29,47 +43,30 @@ class ChooseAvatarFragment : Fragment() {
             factoryProducer = { viewModelFactory }
     )
 
-
-
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = FragmentChooseAvatarBinding.inflate(layoutInflater)
+        viewModelFactory = ChooseAvatarViewModelFactory()
+        viewModel.processArgs(args)
 
-        viewModelFactory = ChooseAvatarViewModelFactory(args)
+
+        subscribeObservers()
 
         initChooseNameTitle()
 
-        val viewStateObserver = Observer<Player> { player ->
+        binding.editTextName.textChanges()
+            .debounce(300)
+            .onEach {
+                viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeNameEvent(it.toString()))
+            }.launchIn(lifecycleScope)
 
-            if (player.avatarResourceId != -1){
-                val drawable = ContextCompat.getDrawable(requireContext(), player.avatarResourceId)
-                binding.imageAvatar.setImageDrawable(drawable)
-            }
-
-
-            if (player.name == null)
-                binding.editTextName.text?.clear()
-            else
-                binding.editTextName.setText(player.name)
-
-        }
-
-        viewModel.viewState.observe(viewLifecycleOwner, viewStateObserver)
+        // TODO faire le setEvent(ChangeResourceId)
 
         binding.btnValidate.setOnClickListener {
-
-            val player = viewModel.viewState.value!!
-
-            val name = binding.editTextName.text?.toString()
-
-            if (name == null || player.avatarResourceId == -1) {
-                Toast.makeText(requireContext(), R.string.choosePlayerError, Toast.LENGTH_LONG).show()
-            } else{
-                navigateToHomeFragment(player)
-            }
-
+            viewModel.setChooseAvatarEvent(ChooseAvatarEvent.SavePlayerEvent)
         }
-
 
         return binding.root
     }
@@ -78,7 +75,7 @@ class ChooseAvatarFragment : Fragment() {
 
         val text: String?
 
-        if (args.player?.name == null ) {
+        if (viewModel.player.value!!.name == null ) {
 
             val textArray: Array<String> = requireContext().resources.getStringArray(R.array.emptyNameHeader)
             val index = Random.nextInt(textArray.size)
@@ -94,39 +91,51 @@ class ChooseAvatarFragment : Fragment() {
         binding.chooseNameTitle.text = text
     }
 
-    private fun navigateToHomeFragment( player: Player) {
-        val action = ChooseAvatarFragmentDirections.actionChooseAvatarFragmentToHomeFragment(player)
+    private fun subscribeObservers() {
+
+        viewModel.player.observe(viewLifecycleOwner) { player ->
+
+
+            val drawable = ContextCompat.getDrawable(requireContext(), player.drawableResourceId)
+            binding.imageAvatar.setImageDrawable(drawable)
+
+
+            //Log.d("mdebug", player.toString())
+
+            if (player.name != null)
+                binding.name.setText(player.name)
+
+        }
+
+
+        viewModel.savePlayerState.observe(viewLifecycleOwner) { resource ->
+
+            when (resource) {
+
+                is Resource.Failure -> {
+                    binding.progressBar.visibility = View.GONE
+                    resource.exception.toast(requireContext())
+                }
+
+                is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
+
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    navigateToHomeFragment(resource.data)
+                }
+            }
+
+        }
+
+    }
+
+    private fun navigateToHomeFragment(idPlayer: String) {
+        val action = ChooseAvatarFragmentDirections.actionChooseAvatarFragmentToHomeFragment(idPlayer)
         findNavController().navigate(action)
     }
 
-    fun updateAvatar(view: View) {
 
-        val id: Int = view.id
 
-        val resourceId = when (id) {
-
-            R.id.man1View -> R.drawable.man1
-            R.id.man2View -> R.drawable.man2
-            R.id.man3View -> R.drawable.man3
-            R.id.man4View -> R.drawable.man4
-            R.id.man5View -> R.drawable.man5
-            R.id.man6View -> R.drawable.man6
-            R.id.man7View -> R.drawable.man7
-            R.id.man8View -> R.drawable.man8
-            R.id.woman1View -> R.drawable.woman1
-            R.id.woman2View -> R.drawable.woman2
-            R.id.woman3View -> R.drawable.woman3
-            R.id.woman4View -> R.drawable.woman4
-            R.id.woman5View -> R.drawable.woman5
-            R.id.woman6View -> R.drawable.woman6
-            R.id.woman7View -> R.drawable.woman7
-            R.id.woman8View -> R.drawable.woman8
-            else -> R.drawable.man1
-        }
-
-        viewModel.updateAvatar(resourceId)
-
-    }
 
 
 }
