@@ -1,7 +1,5 @@
 package com.example.golfbook.ui.chooseAvatar
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.golfbook.R
 import com.example.golfbook.data.model.Player
@@ -13,22 +11,24 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
+
 @Suppress("UNCHECKED_CAST")
-class ChooseAvatarViewModelFactory : ViewModelProvider.Factory {
+class ChooseAvatarViewModelFactory(val player: Player?): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(ChooseAvatarViewModel::class.java)){
-            return ChooseAvatarViewModel() as T
+            return ChooseAvatarViewModel(player) as T
         }
 
-        throw IllegalArgumentException("Unknown viewmodel class")
-
+        throw IllegalArgumentException("Unknown modelView class")
     }
 
 }
 
-class ChooseAvatarViewModel : ViewModel() {
+class ChooseAvatarViewModel(
+        private val currentPlayer: Player?
+) : ViewModel() {
 
     private val _player: MutableLiveData<Player> = MutableLiveData()
     val player: LiveData<Player> = _player
@@ -36,43 +36,49 @@ class ChooseAvatarViewModel : ViewModel() {
     private val _savePlayerState: MutableLiveData<Resource<String>> = MutableLiveData()
     val savePlayerState: LiveData<Resource<String>> = _savePlayerState
 
+    private lateinit var action: chooseAvatarAction
+
     private val repository = PlayerRepository
 
 
     // créé le livedata de player au createView du fragment
     fun processArgs(args: ChooseAvatarFragmentArgs) {
 
-        val player = if (args.name == null || args.drawableResourceId == -1) { // si le joueur recu est vide
-            Player(
-                    playerId = null,
-                    name = null,
-                    drawableResourceId = R.drawable.man1,
-                    managerId = null
-            )
-        } else {
+        action = args.chooseAvatarAction
 
-            val managerId = if (args.managerId == "null") {
-                null
-            } else {
-                args.managerId
+        when (action) {
+
+            chooseAvatarAction.CREATE_MAIN_PLAYER -> {
+                _player.value = Player(
+                        playerId = null,
+                        name = null,
+                        drawableResourceId = R.drawable.man1,
+                        managerId = null
+                )
             }
 
-            val playerId = if (args.playerId == "null")
-                null
-            else
-                args.playerId
+            chooseAvatarAction.CREATE_MANAGED_PLAYER -> {
 
+                _player.value = Player(
+                        playerId = null,
+                        name = null,
+                        drawableResourceId = R.drawable.man1,
+                        managerId = currentPlayer?.playerId ?: throw Exception("managedPlayer without manager")
+                )
 
-            Player(
-                    playerId = playerId,
-                    name = args.name,
-                    drawableResourceId = args.drawableResourceId,
-                    managerId = managerId
-            )
+            }
 
+            chooseAvatarAction.UPDATE_MAIN_PLAYER -> {
+
+                currentPlayer?.let {
+
+                    _player.value = it
+
+                } ?: throw Exception("No current player")
+
+            }
         }
 
-        _player.value = player
     }
 
 
@@ -80,7 +86,9 @@ class ChooseAvatarViewModel : ViewModel() {
 
         when (event) {
 
-            is ChooseAvatarEvent.ChangeDrawableResourceIdEvent -> _player.value!!.drawableResourceId = event.drawableResourceId
+            is ChooseAvatarEvent.ChangeDrawableResourceIdEvent -> _player.value = player.value?.apply {
+                drawableResourceId = event.drawableResourceId
+            }
 
             is ChooseAvatarEvent.ChangeNameEvent -> {
 
@@ -100,10 +108,24 @@ class ChooseAvatarViewModel : ViewModel() {
                 } else{
 
                     viewModelScope.launch {
-                        repository.putPlayer(player)
-                            .onEach { resource ->
-                            _savePlayerState.value = resource
-                        }.launchIn(viewModelScope)
+                        when (action) {
+
+                            chooseAvatarAction.CREATE_MAIN_PLAYER, chooseAvatarAction.CREATE_MANAGED_PLAYER -> {
+                                repository.putPlayer(player)
+                                        .onEach { resource ->
+                                            _savePlayerState.value = resource
+                                        }.launchIn(viewModelScope)
+                            }
+
+                            chooseAvatarAction.UPDATE_MAIN_PLAYER -> {
+
+                                repository.updatePlayer(player)
+                                        .onEach { resource ->
+                                            _savePlayerState.value = resource
+                                        }.launchIn(viewModelScope)
+                            }
+
+                        }
                     }
 
                 }
@@ -112,6 +134,11 @@ class ChooseAvatarViewModel : ViewModel() {
 
 
         }
+    }
+
+    companion object {
+
+        enum class chooseAvatarAction {CREATE_MAIN_PLAYER, UPDATE_MAIN_PLAYER, CREATE_MANAGED_PLAYER}
     }
 
 }

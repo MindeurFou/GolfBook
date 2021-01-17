@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +22,7 @@ import com.example.golfbook.databinding.FragmentChooseAvatarBinding
 import com.example.golfbook.data.model.Player
 import com.example.golfbook.extensions.ExceptionExtensions.toast
 import com.example.golfbook.extensions.ViewExtensions.textChanges
+import com.example.golfbook.ui.ActivityViewModel
 import com.example.golfbook.ui.home.HomeEvent
 import com.example.golfbook.utils.Resource
 import kotlinx.coroutines.CoroutineScope
@@ -37,18 +40,21 @@ class ChooseAvatarFragment : Fragment() {
 
     private val args: ChooseAvatarFragmentArgs by navArgs()
 
-    private lateinit var viewModelFactory: ChooseAvatarViewModelFactory
-
+    private lateinit var chooseAvatarViewModelFactory: ChooseAvatarViewModelFactory
     private val viewModel: ChooseAvatarViewModel by viewModels(
-            factoryProducer = { viewModelFactory }
+            factoryProducer =  { chooseAvatarViewModelFactory }
     )
+
+    var backdropShown: Boolean = false
+
+    private val mainViewModel: ActivityViewModel by activityViewModels()
 
     @FlowPreview
     @ExperimentalCoroutinesApi
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = FragmentChooseAvatarBinding.inflate(layoutInflater)
-        viewModelFactory = ChooseAvatarViewModelFactory()
+        chooseAvatarViewModelFactory = ChooseAvatarViewModelFactory(mainViewModel.currentPlayer)
         viewModel.processArgs(args)
 
 
@@ -62,11 +68,16 @@ class ChooseAvatarFragment : Fragment() {
                 viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeNameEvent(it.toString()))
             }.launchIn(lifecycleScope)
 
-        // TODO faire le setEvent(ChangeResourceId)
+
+        binding.imageAvatar.setOnClickListener (
+            AvatarImageClickListener(requireContext(), binding.mainLayout, true, setChangeAvatarEvent = null, this)
+        )
 
         binding.btnValidate.setOnClickListener {
             viewModel.setChooseAvatarEvent(ChooseAvatarEvent.SavePlayerEvent)
         }
+
+        bindOnClickListenerImagesAvatar()
 
         return binding.root
     }
@@ -100,8 +111,6 @@ class ChooseAvatarFragment : Fragment() {
             binding.imageAvatar.setImageDrawable(drawable)
 
 
-            //Log.d("mdebug", player.toString())
-
             if (player.name != null)
                 binding.name.setText(player.name)
 
@@ -129,13 +138,65 @@ class ChooseAvatarFragment : Fragment() {
 
     }
 
+    private fun bindOnClickListenerImagesAvatar() {
+
+        val container = binding.mainLayout
+
+        binding.man1View.setOnClickListener(AvatarImageClickListener(requireContext(),
+            container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man1))}, fragment = this))
+
+        binding.man2View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man2)) }, fragment = this))
+
+        binding.man3View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man3))}, fragment = this))
+
+        binding.man4View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man4))}, fragment = this))
+
+        binding.man5View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man5))}, fragment = this))
+
+        binding.man6View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man6))}, fragment = this))
+
+        binding.man7View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man7))}, fragment = this))
+
+        binding.man8View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.man8))}, fragment = this))
+
+        binding.woman1View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman1))}, fragment = this))
+
+        binding.woman2View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman2))}, fragment = this))
+
+        binding.woman3View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman3))}, fragment = this))
+
+        binding.woman4View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman4))}, fragment = this))
+
+        binding.woman5View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman5))}, fragment = this))
+
+        binding.woman6View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman6))}, fragment = this))
+
+        binding.woman7View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman7))}, fragment = this))
+
+        binding.woman8View.setOnClickListener(AvatarImageClickListener(requireContext(),
+                container, setChangeAvatarEvent = { viewModel.setChooseAvatarEvent(ChooseAvatarEvent.ChangeDrawableResourceIdEvent(R.drawable.woman8))}, fragment = this))
+
+
+    }
+
     private fun navigateToHomeFragment(idPlayer: String) {
         val action = ChooseAvatarFragmentDirections.actionChooseAvatarFragmentToHomeFragment(idPlayer)
         findNavController().navigate(action)
     }
-
-
-
 
 
 }

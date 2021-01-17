@@ -34,4 +34,18 @@
     <string name="emptyLounge">Le salon choisit est vide</string>
     <string name="lonelyPlayer">Vous ne pouvez pas jouer tout seul</string>
     <string name="joinLounge">Rejoindre</string>
+    <string name="player_id_key">playerId</string>
+    <string name="btnSeeCourses">Voir les parcours</string>
+    <string name="createCourseTitle">Créé ton parcours</string>
+    <string name="courseNameHint">Nom du parcours</string>
+    <string name="btn18holes">18 trous</string>
+    <string name="btn9holes">9 trous</string>
+    <string name="hole1">Trou n°1</string>
+    <string name="hole2">Trou n°2</string>
+    <string name="hole3">Trou n°3</string>
+    <string name="invalidCourse">Veuillez remplir correctement le parcours</string>
+    <string name="numberGamePlayed">Nombre de parties jouées : </string>
+    <string name="numberOfHoles">Nombre de trous : </string>
+    <string name="parNumber">Par : </string>
+    <string name="holeNumber">Trou n° %1$d</string>
 </resources>

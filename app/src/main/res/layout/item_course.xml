@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16sp">
+
+    <TextView
+        android:id="@+id/courseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        tools:text="Parcours du cygne de Champagne"
+        style="@style/TextAppearance.GolfBook.Body1"/>
+
+    <!--<TextView
+        android:id="@+id/numberGamePlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/numberGamePlayed"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:layout_below="@id/courseName"/>
+
+    <TextView
+        android:id="@+id/numberGamePlayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="8"
+        style="@style/TextAppearance.GolfBook.Body1"
+        android:textSize="16sp"
+        android:layout_toEndOf="@id/numberGamePlayerTitle"
+        android:layout_alignBottom="@id/numberGamePlayerTitle"
+        android:layout_marginStart="2dp"/>-->
+
+
+
+</RelativeLayout>

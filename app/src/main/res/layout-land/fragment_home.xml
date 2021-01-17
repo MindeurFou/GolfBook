@@ -43,6 +43,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/btnSeeCourses"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.GolfBook.Button"
+        android:text="@string/btnSeeCourses"
+        app:layout_constraintEnd_toEndOf="@id/btnAddCourse"
+        app:layout_constraintStart_toStartOf="@id/btnAddCourse"
+        app:layout_constraintTop_toBottomOf="@id/btnAddCourse" />
+
+    <Button
         android:id="@+id/btnManageOtherPlayer"
         style="@style/Widget.GolfBook.Button"
         android:layout_width="wrap_content"

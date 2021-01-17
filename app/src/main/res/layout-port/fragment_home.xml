@@ -56,13 +56,24 @@
 
     <Button
         android:id="@+id/btnAddCourse"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         style="@style/Widget.GolfBook.Button"
         android:text="@string/btnAddCourse"
         app:layout_constraintBottom_toTopOf="@+id/loungeContainer"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnSeeCourses"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSeeCourses"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.GolfBook.Button"
+        android:text="@string/btnSeeCourses"
+        app:layout_constraintBottom_toTopOf="@+id/loungeContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnAddCourse"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

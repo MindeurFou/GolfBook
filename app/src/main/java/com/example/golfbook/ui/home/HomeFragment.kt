@@ -1,5 +1,6 @@
 package com.example.golfbook.ui.home
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -9,14 +10,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.golfbook.R
 import com.example.golfbook.data.model.Player
 import com.example.golfbook.databinding.FragmentHomeBinding
 import com.example.golfbook.extensions.ExceptionExtensions.toast
 import com.example.golfbook.extensions.ViewExtensions.findDrawableResourceId
+import com.example.golfbook.ui.ActivityViewModel
+import com.example.golfbook.ui.chooseAvatar.ChooseAvatarViewModel
 import com.example.golfbook.utils.Resource
 import java.lang.Exception
 
@@ -31,6 +36,8 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels(
         factoryProducer = { viewModelFactory }
     )
+
+    private val mainViewModel: ActivityViewModel by activityViewModels()
 
     private lateinit var adapter: LoungeAdapter
 
@@ -78,7 +85,7 @@ class HomeFragment : Fragment() {
             }
 
             player?.let {
-                navigateToChooseAvatarFragment(it, null)
+                navigateToChooseAvatarFragment(ChooseAvatarViewModel.Companion.chooseAvatarAction.UPDATE_MAIN_PLAYER)
             }
 
         }
@@ -95,8 +102,12 @@ class HomeFragment : Fragment() {
             }
 
             player?.let {
-                navigateToChooseAvatarFragment(null, it.playerId!!)
+                navigateToChooseAvatarFragment(ChooseAvatarViewModel.Companion.chooseAvatarAction.CREATE_MANAGED_PLAYER)
             }
+
+        }
+
+        binding.btnAddCourse.setOnClickListener {
 
         }
 
@@ -119,14 +130,15 @@ class HomeFragment : Fragment() {
 
                 is Resource.Success -> {
 
-                    resource.data?.let { player ->
+                    val player = resource.data
 
-                        val drawable = ContextCompat.getDrawable(requireContext(), player.drawableResourceId)
-                        binding.imageAvatarHome.setImageDrawable(drawable)
+                    val drawable = ContextCompat.getDrawable(requireContext(), player.drawableResourceId)
+                    binding.imageAvatarHome.setImageDrawable(drawable)
 
-                        binding.avatarName.text = player.name
-                    } ?: Toast.makeText(requireContext(), "Le joueur n'as pas été trouvé", Toast.LENGTH_LONG).show()
+                    binding.avatarName.text = player.name
 
+                    mainViewModel.currentPlayer = player
+                    updateSharedPref(player.playerId!!)
 
                 }
             }
@@ -161,16 +173,20 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun navigateToChooseAvatarFragment(player: Player?, managerId: String?) {
+    private fun navigateToChooseAvatarFragment(chooseAvatarAction: ChooseAvatarViewModel.Companion.chooseAvatarAction) {
 
         val action = HomeFragmentDirections.actionHomeFragmentToChooseAvatarFragment(
-                name = player?.name,
-                drawableResourceId = player?.drawableResourceId ?: -1,
-                managerId = managerId,
-                playerId = player?.playerId
+                chooseAvatarAction = chooseAvatarAction
         )
 
         findNavController().navigate(action)
+    }
+
+    private fun updateSharedPref(playerId: String) {
+
+        val sharedPrefEditor = activity?.getPreferences(Context.MODE_PRIVATE)?.edit()
+
+        sharedPrefEditor?.putString(requireContext().getString(R.string.player_id_key), playerId)?.apply()
     }
 
 }

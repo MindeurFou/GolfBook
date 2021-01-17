@@ -30,8 +30,8 @@ class HomeViewModelFactory : ViewModelProvider.Factory {
 
 class HomeViewModel : ViewModel() {
 
-    private val _player: MutableLiveData<Resource<Player?>> = MutableLiveData()
-    val player: LiveData<Resource<Player?>> = _player
+    private val _player: MutableLiveData<Resource<Player>> = MutableLiveData()
+    val player: LiveData<Resource<Player>> = _player
 
     private val _managedPlayers: MutableLiveData<Resource<List<Player>>> = MutableLiveData()
     val managedPlayers: LiveData<Resource<List<Player>>> = _managedPlayers

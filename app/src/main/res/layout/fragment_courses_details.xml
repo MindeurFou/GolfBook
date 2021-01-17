@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor"
+    android:orientation="vertical"
+    tools:context=".ui.viewCourses.ViewCoursesFragment">
+
+    <TextView
+        android:id="@+id/courseTitle"
+        style="@style/TextAppearance.GolfBook.Guidelines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Parcours de patrick" />
+
+    <TextView
+        android:id="@+id/numberOfHolesTitle"
+        style="@style/TextAppearance.GolfBook.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/numberOfHoles"
+        android:textSize="18sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/courseTitle"/>
+
+    <TextView
+        android:id="@+id/numberOfHoles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/numberOfHolesTitle"
+        app:layout_constraintStart_toEndOf="@+id/numberOfHolesTitle"
+        app:layout_constraintTop_toTopOf="@+id/numberOfHolesTitle"
+        tools:text="18" />
+
+    <TextView
+        android:id="@+id/parTitle"
+        style="@style/TextAppearance.GolfBook.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/parNumber"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/numberOfHolesTitle"
+        app:layout_constraintTop_toBottomOf="@id/numberOfHolesTitle" />
+
+    <TextView
+        android:id="@+id/par"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/parTitle"
+        app:layout_constraintStart_toEndOf="@+id/parTitle"
+        app:layout_constraintTop_toTopOf="@+id/parTitle"
+        tools:text="72" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCourseHoles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/parTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
