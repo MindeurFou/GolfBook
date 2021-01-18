@@ -41,6 +41,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var adapter: LoungeAdapter
 
+
+    // TODO : le managedPlayer fonctionne correctement mais prend la place graphique du mainPlayer
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = FragmentHomeBinding.inflate(inflater)
@@ -107,9 +109,9 @@ class HomeFragment : Fragment() {
 
         }
 
-        binding.btnAddCourse.setOnClickListener {
+        binding.btnAddCourse.setOnClickListener { navigateToCreateCourseFragment() }
 
-        }
+        binding.btnSeeCourses.setOnClickListener { navigateToViewCoursesFragment() }
 
 
         return binding.root
@@ -125,7 +127,6 @@ class HomeFragment : Fragment() {
 
                 is Resource.Failure -> {
                     resource.exception.toast(requireContext())
-                    Log.d("mdebug", resource.exception.message.toString())
                 }
 
                 is Resource.Success -> {
@@ -181,6 +182,11 @@ class HomeFragment : Fragment() {
 
         findNavController().navigate(action)
     }
+
+    private fun navigateToCreateCourseFragment() = findNavController().navigate(R.id.action_homeFragment_to_createCourseFragment)
+
+    private fun navigateToViewCoursesFragment() = findNavController().navigate(R.id.action_homeFragment_to_viewCoursesFragment)
+
 
     private fun updateSharedPref(playerId: String) {
 

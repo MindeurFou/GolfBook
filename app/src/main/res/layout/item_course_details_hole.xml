@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:padding="16sp">
 
     <TextView
         android:id="@+id/holeNumberTitle"
+        style="@style/TextAppearance.GolfBook.Guidelines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        tools:text="Trou n°1 : "
-        style="@style/TextAppearance.GolfBook.Body1"/>
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Trou n°1 : " />
 
     <TextView
         android:id="@+id/holeValue"
+        style="@style/TextAppearance.GolfBook.Guidelines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        tools:text="3"
-        style="@style/TextAppearance.GolfBook.Body1"
-        android:layout_toEndOf="@id/holeNumberTitle"/>
+        app:layout_constraintStart_toEndOf="@id/holeNumberTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="3" />
 
     <!--<TextView
         android:id="@+id/numberGamePlayerTitle"
@@ -44,5 +53,4 @@
         android:layout_marginStart="2dp"/>-->
 
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

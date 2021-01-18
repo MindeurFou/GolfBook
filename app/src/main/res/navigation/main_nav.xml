@@ -34,12 +34,13 @@
         <action
             android:id="@+id/action_homeFragment_to_createCourseFragment"
             app:destination="@id/createCourseFragment" />
-        <argument
-            android:name="playerId"
-            app:argType="string" />
         <action
             android:id="@+id/action_homeFragment_to_viewCoursesFragment"
             app:destination="@id/viewCoursesFragment" />
+        <argument
+            android:name="playerId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment

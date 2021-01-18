@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/primaryColor">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/createCourseTitle"
@@ -18,17 +14,24 @@
             android:text="@string/createCourseTitle"
             style="@style/TextAppearance.GolfBook.Guidelines"
             android:textSize="24sp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/courseNameInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
-            android:hint="@string/courseNameHint">
+            android:hint="@string/courseNameHint"
+            app:layout_constraintTop_toBottomOf="@id/createCourseTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/courseNameEditText"
@@ -40,18 +43,22 @@
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggleButtonNbHoles"
+            app:singleSelection="true"
+            app:checkedButton="@id/btn18Holes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toBottomOf="@id/courseNameInputLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <Button
                 android:id="@+id/btn18Holes"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btn18holes"
-                style="?attr/materialButtonOutlinedStyle"
-                />
+                style="?attr/materialButtonOutlinedStyle"/>
 
             <Button
                 android:id="@+id/btn9Holes"
@@ -63,74 +70,52 @@
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/hole1InputLayout"
+    <ScrollView
+        android:id="@+id/createHolesContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnValidateCourse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggleButtonNbHoles">
+
+        <LinearLayout
+            android:id="@+id/createHolesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:hint="@string/hole1">
+            android:orientation="vertical"/>
+    </ScrollView>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/hole1EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnValidateCourse"
+        app:layout_constraintEnd_toStartOf="@+id/btnValidateCourse"
+        app:layout_constraintTop_toTopOf="@+id/btnValidateCourse" />
 
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/hole2InputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:hint="@string/hole2">
+    <Button
+        android:id="@+id/btnValidateCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/validate"
+        style="@style/Widget.GolfBook.Button"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/createHolesContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/hole2EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/hole3InputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:hint="@string/hole3">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/hole3EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-
-
-        <Button
-            android:id="@+id/btnValidateCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/validate"
-            style="@style/Widget.GolfBook.Button"
-            android:layout_gravity="end"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"/>
-
-    </LinearLayout>
-
-
-</ScrollView>
 
 

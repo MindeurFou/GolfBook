@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.golfbook.R
 
-class AllCoursesViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
+class AllCoursesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val courseName: TextView = itemView.findViewById(R.id.courseName)
     //val numberOfGames: TextView = itemView.findViewById(R.id.numberGamePlayed)

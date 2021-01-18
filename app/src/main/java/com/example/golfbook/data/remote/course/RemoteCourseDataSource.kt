@@ -17,7 +17,8 @@ object RemoteCourseDataSource {
 
         val id = courseCollectionRef.add(course).await().id
 
-        courseNameListCollectionRef.add(course.name).await()
+        val map: Map<String, String> = mapOf("name" to course.name)
+        courseNameListCollectionRef.add(map).await()
 
         return id
     }
@@ -26,6 +27,20 @@ object RemoteCourseDataSource {
     suspend fun getCourse(courseId: String) : FirestoreCourseEntity?  {
         val document = courseCollectionRef.document(courseId).get().await()
         return document.toObject()
+    }
+
+    suspend fun getCourseByName(name: String) : FirestoreCourseEntity?  {
+
+        val querySnapshot = courseCollectionRef.whereEqualTo("name", name).get().await()
+
+        if (querySnapshot.documents.size == 1) {
+
+            val document = querySnapshot.documents[0]
+
+            return document.toObject()
+        }
+
+        return null
     }
 
     suspend fun getAllCourses() : List<Pair<String,FirestoreCourseEntity>> {

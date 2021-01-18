@@ -13,7 +13,7 @@ object CourseRepository {
 
     private val remoteCourseMapper = RemoteCourseMapper
 
-    suspend fun getCourse(courseId: String) : Flow<Resource<Course?>> = flow {
+    suspend fun getCourse(courseId: String) : Flow<Resource<Course>> = flow {
 
         emit(Resource.Loading)
 
@@ -23,6 +23,26 @@ object CourseRepository {
             firestoreCourseEntity?.let {
 
                 val course = remoteCourseMapper.mapFromEntity(firestoreCourseEntity, courseId)
+                emit(Resource.Success(course))
+
+            }  ?: emit(Resource.Failure(Exception("Le parcours n'as pas été trouvé")))
+
+        } catch (e: Exception) {
+            emit(Resource.Failure(e))
+        }
+
+    }
+
+    suspend fun getCourseByname(name: String) : Flow<Resource<Course>> = flow {
+
+        emit(Resource.Loading)
+
+        try {
+            val firestoreCourseEntity = remoteCourseDataSource.getCourseByName(name)
+
+            firestoreCourseEntity?.let {
+
+                val course = remoteCourseMapper.mapFromEntity(firestoreCourseEntity, "null")
                 emit(Resource.Success(course))
 
             }  ?: emit(Resource.Failure(Exception("Le parcours n'as pas été trouvé")))

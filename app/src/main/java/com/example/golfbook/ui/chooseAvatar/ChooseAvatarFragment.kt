@@ -51,7 +51,7 @@ class ChooseAvatarFragment : Fragment() {
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = FragmentChooseAvatarBinding.inflate(layoutInflater)
         chooseAvatarViewModelFactory = ChooseAvatarViewModelFactory(mainViewModel.currentPlayer)

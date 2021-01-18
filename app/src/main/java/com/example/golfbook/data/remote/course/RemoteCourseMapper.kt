@@ -36,7 +36,7 @@ object RemoteCourseMapper : EntityMapper<FirestoreCourseEntity, Course> {
         var par = 0
 
         for (hole in listHoles)
-            par += hole.par
+            par += hole.par!!
 
         return Course(entity.name, numberOfHoles, listHoles, par)
     }
@@ -47,15 +47,15 @@ object RemoteCourseMapper : EntityMapper<FirestoreCourseEntity, Course> {
                 name = domainModel.name,
                 numberOfHoles = domainModel.numberOfHoles,
                 gamesPlayed = domainModel.gamesPlayed,
-                domainModel.holes[0].par,
-                domainModel.holes[1].par,
-                domainModel.holes[2].par,
-                domainModel.holes[3].par,
-                domainModel.holes[4].par,
-                domainModel.holes[5].par,
-                domainModel.holes[6].par,
-                domainModel.holes[7].par,
-                domainModel.holes[8].par,
+                domainModel.holes[0].par!!,
+                domainModel.holes[1]!!.par!!,
+                domainModel.holes[2].par!!,
+                domainModel.holes[3].par!!,
+                domainModel.holes[4].par!!,
+                domainModel.holes[5].par!!,
+                domainModel.holes[6].par!!,
+                domainModel.holes[7].par!!,
+                domainModel.holes[8].par!!,
                 domainModel.holes.getOrNull(9)?.par,
                 domainModel.holes.getOrNull(10)?.par,
                 domainModel.holes.getOrNull(11)?.par,

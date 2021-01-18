@@ -5,12 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.golfbook.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.golfbook.databinding.FragmentViewCoursesBinding
+
+
 import com.example.golfbook.extensions.ExceptionExtensions.toast
 import com.example.golfbook.utils.Resource
 
@@ -23,6 +23,8 @@ class ViewCoursesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = FragmentViewCoursesBinding.inflate(inflater)
+
+        binding.recyclerViewCourses.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         viewModel.coursesName.observe(viewLifecycleOwner) { resource ->
 

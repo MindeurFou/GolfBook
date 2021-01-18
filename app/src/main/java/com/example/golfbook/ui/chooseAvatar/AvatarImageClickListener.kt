@@ -36,7 +36,7 @@ class AvatarImageClickListener(
 
             makeAnimation()
 
-        } else if (!fragment.backdropShown) {
+        } else if (fragment.backdropShown) {
 
             setChangeAvatarEvent?.invoke()
             makeAnimation()
@@ -56,7 +56,7 @@ class AvatarImageClickListener(
 
         val translateY = -(context.resources.getDimensionPixelSize(R.dimen.avatar_images_available_reveal_height))
 
-        val animator = ObjectAnimator.ofFloat(container, "translationY", (if (fragment.backdropShown) 0 else translateY).toFloat())
+        val animator = ObjectAnimator.ofFloat(container, "translationY", (if (fragment.backdropShown) translateY else 0).toFloat())
 
         animator.duration = 500
 

@@ -43,11 +43,16 @@ class HomeViewModel : ViewModel() {
     private val playerRepo = PlayerRepository
 
 
-    fun processArgs(args: HomeFragmentArgs) = playerRepo
-            .getPlayer(args.playerId)
-            .onEach {  _player.value = it }
-            .launchIn(viewModelScope)
+    fun processArgs(args: HomeFragmentArgs) {
 
+        args.playerId?.let { playerId ->
+
+            playerRepo.getPlayer(playerId)
+                    .onEach { _player.value = it }
+                    .launchIn(viewModelScope)
+        }
+
+    }
 
     fun setHomeEvent(homeEvent: HomeEvent) {
 

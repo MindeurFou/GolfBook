@@ -3,7 +3,6 @@ package com.example.golfbook.ui.viewCourses.details
 import androidx.lifecycle.*
 import com.example.golfbook.data.model.Course
 import com.example.golfbook.data.repository.CourseRepository
-import com.example.golfbook.ui.viewCourses.CourseDetailsFragmentArgs
 import com.example.golfbook.utils.Resource
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,8 +37,8 @@ class CourseDetailsViewModel(
 
         viewModelScope.launch {
 
-            courseRepository.getCourse(args.courseName).onEach { resource ->
-                // TODO
+            courseRepository.getCourseByname(args.courseName).onEach { resource ->
+                _course.value = resource
             }.launchIn(viewModelScope)
         }
 

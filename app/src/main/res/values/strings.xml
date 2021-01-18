@@ -47,5 +47,5 @@
     <string name="numberGamePlayed">Nombre de parties jouées : </string>
     <string name="numberOfHoles">Nombre de trous : </string>
     <string name="parNumber">Par : </string>
-    <string name="holeNumber">Trou n° %1$d</string>
+    <string name="holeNumber">Trou n° %1$d : </string>
 </resources>
