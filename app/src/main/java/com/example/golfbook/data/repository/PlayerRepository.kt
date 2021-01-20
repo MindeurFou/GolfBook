@@ -42,7 +42,7 @@ object PlayerRepository {
 
             firestorePlayerEntity?.let {
 
-                val player = remoteMapper.mapFromEntity(firestorePlayerEntity, playerId)
+                val player = remoteMapper.mapFromEntityWithId(firestorePlayerEntity, playerId)
                 emit(Resource.Success(player))
 
             } ?: emit(Resource.Failure(Exception("Le joueur n'as pas été trouvé")))

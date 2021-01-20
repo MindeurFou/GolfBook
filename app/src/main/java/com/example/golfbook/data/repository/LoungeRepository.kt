@@ -1,15 +1,16 @@
 package com.example.golfbook.data.repository
 
 import com.example.golfbook.data.model.Lounge
-import com.example.golfbook.data.remote.RemoteLoungeDataSource
+import com.example.golfbook.data.remote.lounge.RemoteLoungeDataSource
+import com.example.golfbook.data.remote.lounge.RemoteLoungeMapper
 import com.example.golfbook.utils.Resource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
 object LoungeRepository {
 
     private val remoteLoungeDataSource = RemoteLoungeDataSource
+    private val remoteLoungeMapper = RemoteLoungeMapper
 
     suspend fun joinLounge() : Flow<Resource<Unit>> = flow {
 
@@ -35,6 +36,10 @@ object LoungeRepository {
         }
     }
 
+    suspend fun getRealTimeUpdatesOfLounges() : Flow<Resource<List<Lounge>>>  = remoteLoungeDataSource.getRealTimeUpdatesOfLounges()
+
+
+    fun subscribe(setLiveData: (Resource<List<Lounge>>) -> Unit) = remoteLoungeDataSource.subscribe( setLiveData )
 
 
 }

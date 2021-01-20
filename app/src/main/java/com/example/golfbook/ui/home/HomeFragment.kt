@@ -19,11 +19,9 @@ import com.example.golfbook.R
 import com.example.golfbook.data.model.Player
 import com.example.golfbook.databinding.FragmentHomeBinding
 import com.example.golfbook.extensions.ExceptionExtensions.toast
-import com.example.golfbook.extensions.ViewExtensions.findDrawableResourceId
 import com.example.golfbook.ui.ActivityViewModel
 import com.example.golfbook.ui.chooseAvatar.ChooseAvatarViewModel
 import com.example.golfbook.utils.Resource
-import java.lang.Exception
 
 class HomeFragment : Fragment() {
 
@@ -150,13 +148,11 @@ class HomeFragment : Fragment() {
         viewModel.lounges.observe(viewLifecycleOwner) { resource ->
             when (resource) {
 
-                is Resource.Loading -> {
-                    TODO("ajouter un progressbar et la cacher dans les autres etats")
-                }
-                is Resource.Success -> {
-                    adapter.updateLounges(resource.data)
-                }
+                is Resource.Success -> adapter.updateLounges(resource.data)
+
                 is Resource.Failure -> resource.exception.toast(requireContext())
+
+                else -> {}
             }
         }
 

@@ -37,7 +37,7 @@ class CourseDetailsViewModel(
 
         viewModelScope.launch {
 
-            courseRepository.getCourseByname(args.courseName).onEach { resource ->
+            courseRepository.getCourseByName(args.courseName).onEach { resource ->
                 _course.value = resource
             }.launchIn(viewModelScope)
         }

@@ -4,9 +4,15 @@ package com.example.golfbook.ui.home
 import androidx.lifecycle.*
 import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.data.model.Player
+import com.example.golfbook.data.remote.lounge.FirestoreLoungeEntity
+import com.example.golfbook.data.remote.lounge.RemoteLoungeDataSource
+import com.example.golfbook.data.remote.player.FirestorePlayerEntity
 import com.example.golfbook.data.repository.LoungeRepository
 import com.example.golfbook.data.repository.PlayerRepository
 import com.example.golfbook.utils.Resource
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -42,6 +48,14 @@ class HomeViewModel : ViewModel() {
     private val loungeRepo = LoungeRepository
     private val playerRepo = PlayerRepository
 
+    private val loungeListenerRegistration = loungeRepo.subscribe { lounges ->
+        _lounges.value = lounges
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        loungeListenerRegistration.remove() // arrête d'écouter les modifs de lounge
+    }
 
     fun processArgs(args: HomeFragmentArgs) {
 

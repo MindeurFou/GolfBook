@@ -8,33 +8,33 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.golfbook.R
 import com.example.golfbook.data.model.Lounge
+import com.example.golfbook.ui.compoundedComponents.PlayerPreviewItem
 import com.google.android.material.textfield.TextInputEditText
 
 
 class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val loungeName: TextView = itemView.findViewById(R.id.loungeTitle)
-    val courseEditText: TextInputEditText = itemView.findViewById(R.id.editTextCourse)
-    val playersContainer: LinearLayout = itemView.findViewById(R.id.playersContainer)
+    val courseEditText: AutoCompleteTextView = itemView.findViewById(R.id.editTextCourse)
+    val playersContainer: GridLayout = itemView.findViewById(R.id.playersContainer)
     val btnStart: Button = itemView.findViewById(R.id.btnStartGame)
     val btnJoin: ImageButton = itemView.findViewById(R.id.btnJoin)
     val btnLeave: ImageButton = itemView.findViewById(R.id.btnLeave)
 
     fun bind(lounge: Lounge) {
 
-        loungeName.text = itemView.context.getString(R.string.loungeName, lounge.loungeNumber)
+        loungeName.text = itemView.context.getString(R.string.loungeName, lounge.name)
 
-        // TODO dropdown editText
+        val items = listOf("course1","course2","course with a loooooooooong name ")
 
-        lounge.players?.let { players ->
+        val adapter = ArrayAdapter(itemView.context, R.layout.list_courses, items)
+
+        courseEditText.setAdapter(adapter)
+
+        lounge.playersInLounge?.let { players ->
 
             for (player in players) {
-
-                val playerName = TextView(playersContainer.context).apply {
-                    text = player.name
-                }
-
-                playersContainer.addView(playerName)
+                playersContainer.addView(PlayerPreviewItem(itemView.context, player))
             }
 
         }
@@ -42,11 +42,11 @@ class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         btnStart.setOnClickListener { view ->
 
-            if (lounge.course == null) {
+            if (lounge.courseName == null) {
                 Toast.makeText(view.context, R.string.emptyCourse, Toast.LENGTH_LONG).show()
             } else {
 
-                lounge.players?.let { players ->
+                lounge.playersInLounge?.let { players ->
 
                     if (players.size == 1)
                         Toast.makeText(view.context, R.string.lonelyPlayer, Toast.LENGTH_LONG).show()

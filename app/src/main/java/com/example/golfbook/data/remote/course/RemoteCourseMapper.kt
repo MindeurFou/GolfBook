@@ -6,7 +6,7 @@ import com.example.golfbook.utils.EntityMapper
 
 object RemoteCourseMapper : EntityMapper<FirestoreCourseEntity, Course> {
 
-    override fun mapFromEntity(entity: FirestoreCourseEntity, entityId: String): Course {
+    override fun mapFromEntity(entity: FirestoreCourseEntity): Course {
 
         val listHoles: MutableList<Hole> = mutableListOf()
         val numberOfHoles = entity.numberOfHoles
@@ -68,7 +68,8 @@ object RemoteCourseMapper : EntityMapper<FirestoreCourseEntity, Course> {
         )
     }
 
+    // TODO modifier l'utilisation d'un Pair
     fun mapFromEntityList(entities: List<Pair<String, FirestoreCourseEntity>>): List<Course>{
-        return entities.map { mapFromEntity(it.second, it.first) }
+        return entities.map { mapFromEntity(it.second) }
     }
 }

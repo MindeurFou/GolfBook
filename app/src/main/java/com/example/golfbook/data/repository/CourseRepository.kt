@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.flow
 object CourseRepository {
 
     private val remoteCourseDataSource = RemoteCourseDataSource
-
     private val remoteCourseMapper = RemoteCourseMapper
 
     suspend fun getCourse(courseId: String) : Flow<Resource<Course>> = flow {
@@ -22,7 +21,7 @@ object CourseRepository {
 
             firestoreCourseEntity?.let {
 
-                val course = remoteCourseMapper.mapFromEntity(firestoreCourseEntity, courseId)
+                val course = remoteCourseMapper.mapFromEntity(firestoreCourseEntity)
                 emit(Resource.Success(course))
 
             }  ?: emit(Resource.Failure(Exception("Le parcours n'as pas été trouvé")))
@@ -33,7 +32,7 @@ object CourseRepository {
 
     }
 
-    suspend fun getCourseByname(name: String) : Flow<Resource<Course>> = flow {
+    suspend fun getCourseByName(name: String) : Flow<Resource<Course>> = flow {
 
         emit(Resource.Loading)
 
@@ -42,7 +41,7 @@ object CourseRepository {
 
             firestoreCourseEntity?.let {
 
-                val course = remoteCourseMapper.mapFromEntity(firestoreCourseEntity, "null")
+                val course = remoteCourseMapper.mapFromEntity(firestoreCourseEntity)
                 emit(Resource.Success(course))
 
             }  ?: emit(Resource.Failure(Exception("Le parcours n'as pas été trouvé")))
