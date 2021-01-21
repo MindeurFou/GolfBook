@@ -13,8 +13,6 @@
         android:layout_height="0dp"
         android:layout_marginTop="96dp"
         android:layout_marginBottom="148dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -25,7 +23,7 @@
         android:id="@+id/imageAvatarHome"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/man5"
+        tools:src="@drawable/man5"
         app:layout_constraintEnd_toStartOf="@id/avatarName"
         app:layout_constraintBottom_toTopOf="@id/btnUpdatePlayer"
         app:layout_constraintStart_toStartOf="@+id/btnUpdatePlayer"
@@ -82,19 +80,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btnManageOtherPlayer"
+        android:enabled="false"
+        android:backgroundTint="@color/grey"
         app:layout_constraintBottom_toBottomOf="@+id/btnUpdatePlayer"
         app:layout_constraintEnd_toEndOf="@+id/managedPlayerLayout"
         app:layout_constraintStart_toEndOf="@id/btnUpdatePlayer"
         app:layout_constraintTop_toTopOf="@+id/btnUpdatePlayer" />
 
-    <TableLayout
+    <LinearLayout
         android:id="@+id/managedPlayerLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loungeContainer"
         app:layout_constraintStart_toEndOf="@id/btnUpdatePlayer"
-        app:layout_constraintBottom_toTopOf="@id/btnManageOtherPlayer"/>
+        app:layout_constraintBottom_toTopOf="@id/btnManageOtherPlayer">
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

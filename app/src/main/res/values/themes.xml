@@ -36,7 +36,7 @@
 
     <style name="Widget.GolfBook.RoundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
+        <item name="cornerSize">25%</item>
     </style>
 
     <style name="TextAppearance.GolfBook.Title" parent="TextAppearance.MaterialComponents.Headline2">

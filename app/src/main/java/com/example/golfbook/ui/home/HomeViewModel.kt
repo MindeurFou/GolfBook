@@ -1,12 +1,15 @@
 package com.example.golfbook.ui.home
 
 
+import androidx.compose.runtime.onActive
 import androidx.lifecycle.*
+import com.example.golfbook.data.model.Course
 import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.data.model.Player
 import com.example.golfbook.data.remote.lounge.FirestoreLoungeEntity
 import com.example.golfbook.data.remote.lounge.RemoteLoungeDataSource
 import com.example.golfbook.data.remote.player.FirestorePlayerEntity
+import com.example.golfbook.data.repository.CourseRepository
 import com.example.golfbook.data.repository.LoungeRepository
 import com.example.golfbook.data.repository.PlayerRepository
 import com.example.golfbook.utils.Resource
@@ -39,32 +42,58 @@ class HomeViewModel : ViewModel() {
     private val _player: MutableLiveData<Resource<Player>> = MutableLiveData()
     val player: LiveData<Resource<Player>> = _player
 
-    private val _managedPlayers: MutableLiveData<Resource<List<Player>>> = MutableLiveData()
-    val managedPlayers: LiveData<Resource<List<Player>>> = _managedPlayers
+    private val _managedPlayers: MutableLiveData<List<Player>> = MutableLiveData()
+    val managedPlayers: LiveData<List<Player>> = _managedPlayers
 
     private val _lounges: MutableLiveData<Resource<List<Lounge>>> = MutableLiveData()
     val lounges: LiveData<Resource<List<Lounge>>> = _lounges
 
+    private val _listCoursesName: MutableLiveData<Resource<List<String>>> = MutableLiveData()
+    val listCoursesName: LiveData<Resource<List<String>>> = _listCoursesName
+
     private val loungeRepo = LoungeRepository
     private val playerRepo = PlayerRepository
+    private val courseRepo = CourseRepository
 
     private val loungeListenerRegistration = loungeRepo.subscribe { lounges ->
         _lounges.value = lounges
     }
 
+    private val courseNameRegistration = courseRepo.subscribeToCourseName { names ->
+        _listCoursesName.value = names
+    }
+
+
     override fun onCleared() {
         super.onCleared()
         loungeListenerRegistration.remove() // arrête d'écouter les modifs de lounge
+        courseNameRegistration.remove()
     }
 
-    fun processArgs(args: HomeFragmentArgs) {
+    fun retrievePlayerAndManagedPlayers(playerId: String) {
 
-        args.playerId?.let { playerId ->
+        playerRepo.getPlayer(playerId).onEach { resource ->
 
-            playerRepo.getPlayer(playerId)
-                    .onEach { _player.value = it }
-                    .launchIn(viewModelScope)
-        }
+            if (resource is Resource.Success) {
+
+                if (resource.data.managerId != null) {
+                    val listManagedPlayers = _managedPlayers.value?.toMutableList() ?: mutableListOf()
+
+                    listManagedPlayers.add(resource.data)
+
+                    _managedPlayers.value = listManagedPlayers
+                }
+                else {
+                    _player.value = resource
+                }
+            } else {
+                _player.value = resource
+            }
+        }.launchIn(viewModelScope)
+
+        playerRepo.getManagedPlayersLinkedTo(playerId).onEach {
+            // TODO
+        }.launchIn(viewModelScope)
 
     }
 
@@ -105,6 +134,8 @@ class HomeViewModel : ViewModel() {
             }
 
         }
+
+
     }
 
 }

@@ -7,7 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TableRow
+import android.widget.TextView
 import android.widget.Toast
+import androidx.compose.ui.text.font.font
+import androidx.compose.ui.text.font.fontFamily
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -40,12 +45,17 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: LoungeAdapter
 
 
-    // TODO : le managedPlayer fonctionne correctement mais prend la place graphique du mainPlayer
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = FragmentHomeBinding.inflate(inflater)
         viewModelFactory = HomeViewModelFactory()
-        viewModel.processArgs(args)
+
+        // si on vient du fragment chooseAvatar => récupérer le player qui a été choisit
+        args.playerId?.let {
+            viewModel.retrievePlayerAndManagedPlayers(it) // MANAGED PLAYERS DÉSACTIVÉ TANT QUE L'APPLI N'EST PAS PLUS AVANCÉE
+        }
+
+        mainViewModel.currentPlayer?.let { bindMainPlayer(it) }
 
         // =========== Recycler stuff ===========================
 
@@ -74,37 +84,15 @@ class HomeFragment : Fragment() {
 
 
         binding.btnUpdatePlayer.setOnClickListener {
-
-            val playerResource = viewModel.player.value
-            var player: Player? = null
-
-            playerResource?.let {
-                if (it is Resource.Success) {
-                    player = it.data
-                }
-            }
-
-            player?.let {
+          mainViewModel.currentPlayer?.let {
                 navigateToChooseAvatarFragment(ChooseAvatarViewModel.Companion.chooseAvatarAction.UPDATE_MAIN_PLAYER)
             }
-
         }
 
         binding.btnManageOtherPlayer.setOnClickListener {
-
-            val playerResource = viewModel.player.value
-            var player: Player? = null
-
-            playerResource?.let {
-                if (it is Resource.Success) {
-                    player = it.data
-                }
-            }
-
-            player?.let {
+            mainViewModel.currentPlayer?.let {
                 navigateToChooseAvatarFragment(ChooseAvatarViewModel.Companion.chooseAvatarAction.CREATE_MANAGED_PLAYER)
             }
-
         }
 
         binding.btnAddCourse.setOnClickListener { navigateToCreateCourseFragment() }
@@ -121,7 +109,7 @@ class HomeFragment : Fragment() {
         viewModel.player.observe(viewLifecycleOwner) { resource ->
             when (resource) {
 
-                is Resource.Loading -> {}// binding.imageAvatarHome.  TODO display une image d'attente
+                is Resource.Loading -> {} // TODO display une image d'attente
 
                 is Resource.Failure -> {
                     resource.exception.toast(requireContext())
@@ -131,10 +119,7 @@ class HomeFragment : Fragment() {
 
                     val player = resource.data
 
-                    val drawable = ContextCompat.getDrawable(requireContext(), player.drawableResourceId)
-                    binding.imageAvatarHome.setImageDrawable(drawable)
-
-                    binding.avatarName.text = player.name
+                    bindMainPlayer(player)
 
                     mainViewModel.currentPlayer = player
                     updateSharedPref(player.playerId!!)
@@ -157,16 +142,35 @@ class HomeFragment : Fragment() {
         }
 
 
-        viewModel.managedPlayers.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
+        viewModel.managedPlayers.observe(viewLifecycleOwner) { listPlayers ->
 
-                is Resource.Loading -> {}// binding.imageAvatarHome.  TODO display une image d'attente
+            binding.managedPlayerLayout.removeAllViews()
 
-                is Resource.Failure -> resource.exception.toast(requireContext())
+            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-                is Resource.Success -> {} // TODO
+            listPlayers.forEach {
+                val textView = TextView(requireContext()).apply {
+                    text = it.name
+                    layoutParams = params
+                    setTextAppearance(R.style.TextAppearance_GolfBook_Guidelines)
+                    typeface = resources.getFont(R.font.days_one)
+                    maxLines = 1
+                }
+
+                binding.managedPlayerLayout.addView(textView)
             }
 
+            binding.managedPlayerLayout.invalidate()
+            binding.managedPlayerLayout.requestLayout()
+        }
+
+        viewModel.listCoursesName.observe(viewLifecycleOwner) { resource ->
+
+            if (resource is Resource.Failure)
+                resource.exception.toast(requireContext())
+
+            if (resource is Resource.Success)
+                adapter.updateCoursesList(resource.data)
         }
     }
 
@@ -189,6 +193,19 @@ class HomeFragment : Fragment() {
         val sharedPrefEditor = activity?.getPreferences(Context.MODE_PRIVATE)?.edit()
 
         sharedPrefEditor?.putString(requireContext().getString(R.string.player_id_key), playerId)?.apply()
+    }
+
+    private fun bindMainPlayer(player: Player) {
+
+        val drawableResourceId = if (player.drawableResourceId == -1)
+            R.drawable.man1
+        else
+            player.drawableResourceId
+
+        binding.imageAvatarHome.setImageDrawable(ContextCompat.getDrawable(requireContext(), drawableResourceId))
+
+        binding.avatarName.text = player.name
+
     }
 
 }

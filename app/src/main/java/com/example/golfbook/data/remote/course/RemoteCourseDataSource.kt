@@ -1,5 +1,6 @@
 package com.example.golfbook.data.remote.course
 
+import com.example.golfbook.utils.Resource
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.firestore.ktx.toObject
@@ -75,6 +76,31 @@ object RemoteCourseDataSource {
 
         return list
     }
+
+    fun subscribeToCourseName(setLiveData: (Resource<List<String>>) -> Unit) = courseNameListCollectionRef.addSnapshotListener { querySnapshot, firestoreException ->
+
+        firestoreException?.let {
+            setLiveData(Resource.Failure(it))
+        }
+
+        querySnapshot?.let { querySnapshot ->
+
+            val listCoursesName : MutableList<String> = mutableListOf()
+
+            for (document in querySnapshot.documents){
+
+                val name = document.getString("name")
+
+                name?.let {
+                    listCoursesName.add(name)
+                }
+            }
+
+            setLiveData(Resource.Success(listCoursesName))
+        }
+    }
+
+
 
 
 }

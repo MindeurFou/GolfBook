@@ -71,6 +71,14 @@ object PlayerRepository {
 
     }
 
+    fun getManagedPlayersLinkedTo(playerId: String) : Flow<Resource<List<Player>>> = flow {
+
+        emit(Resource.Loading)
+
+        // TODO écrit maintenant mais désactivé tant qu'on arrrive pas jusqu'au finishFragment ou il faudra remove les managedPlayers de firestore
+
+    }
+
     fun deletePlayer(playerId: String) = CoroutineScope(Dispatchers.IO).launch {
 
         try {

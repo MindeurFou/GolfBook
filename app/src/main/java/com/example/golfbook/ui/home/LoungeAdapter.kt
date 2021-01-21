@@ -21,14 +21,11 @@ class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val btnJoin: ImageButton = itemView.findViewById(R.id.btnJoin)
     val btnLeave: ImageButton = itemView.findViewById(R.id.btnLeave)
 
-    fun bind(lounge: Lounge) {
+    fun bind(lounge: Lounge, listCoursesName: List<String>) {
 
         loungeName.text = itemView.context.getString(R.string.loungeName, lounge.name)
 
-        val items = listOf("course1","course2","course with a loooooooooong name ")
-
-        val adapter = ArrayAdapter(itemView.context, R.layout.list_courses, items)
-
+        val adapter = ArrayAdapter(itemView.context, R.layout.list_courses, listCoursesName)
         courseEditText.setAdapter(adapter)
 
         lounge.playersInLounge?.let { players ->
@@ -38,7 +35,6 @@ class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
 
         }
-
 
         btnStart.setOnClickListener { view ->
 
@@ -66,11 +62,12 @@ class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 }
 
 class LoungeAdapter(
-       private val joinLounge: (lounge: Lounge) -> Unit,
-       private val leaveLounge: (lounge: Lounge) -> Unit,
+        private val joinLounge: (lounge: Lounge) -> Unit,
+        private val leaveLounge: (lounge: Lounge) -> Unit,
 ) : RecyclerView.Adapter<LoungeViewHolder>() {
 
     private var lounges: List<Lounge> = listOf()
+    private var listCoursesName: List<String> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoungeViewHolder {
 
@@ -82,7 +79,7 @@ class LoungeAdapter(
     override fun onBindViewHolder(holder: LoungeViewHolder, position: Int) {
 
         val lounge = lounges[position]
-        holder.bind(lounge)
+        holder.bind(lounge, listCoursesName)
 
         holder.btnJoin.setOnClickListener { joinLounge(lounge) }
         holder.btnLeave.setOnClickListener { leaveLounge(lounge) }
@@ -94,6 +91,11 @@ class LoungeAdapter(
 
     fun updateLounges(lounges: List<Lounge>) {
         this.lounges = lounges
+        notifyDataSetChanged()
+    }
+
+    fun updateCoursesList(list: List<String>) {
+        this.listCoursesName = list
         notifyDataSetChanged()
     }
 

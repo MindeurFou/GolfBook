@@ -1,6 +1,7 @@
 package com.example.golfbook.data.repository
 
 import com.example.golfbook.data.model.Course
+import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.data.remote.course.RemoteCourseDataSource
 import com.example.golfbook.data.remote.course.RemoteCourseMapper
 import com.example.golfbook.utils.Resource
@@ -84,6 +85,8 @@ object CourseRepository {
         }
 
     }
+
+    fun subscribeToCourseName(setLiveData: (Resource<List<String>>) -> Unit) = RemoteCourseDataSource.subscribeToCourseName(setLiveData)
 
     suspend fun putCourse(course: Course) : Flow<Resource<String>> = flow {
 

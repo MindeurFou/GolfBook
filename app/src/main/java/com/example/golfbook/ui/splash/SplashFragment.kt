@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +15,7 @@ import com.example.golfbook.data.repository.PlayerRepository
 import com.example.golfbook.ui.ActivityViewModel
 import com.example.golfbook.ui.chooseAvatar.ChooseAvatarViewModel
 import com.example.golfbook.utils.Resource
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,6 +33,13 @@ class SplashFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_splash, container, false)
 
+        val topAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.top_logo_anim)
+        val bottomAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.bottom_splash_title_anim)
+
+        view.findViewById<ShapeableImageView>(R.id.appIcon).startAnimation(topAnim)
+        view.findViewById<TextView>(R.id.app_name).startAnimation(bottomAnim)
+
+
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
 
         val playerId = sharedPref?.getString(requireContext().getString(R.string.player_id_key), null)
@@ -37,7 +47,7 @@ class SplashFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
 
-            delay(1000)
+            delay(2000)
 
             if (playerId != null) {
 

@@ -63,10 +63,11 @@
         app:layout_constraintBottom_toTopOf="@+id/imageAvatarHome"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TableLayout
+    <LinearLayout
         android:id="@+id/managedPlayerLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@id/btnAddCourse"
         app:layout_constraintEnd_toEndOf="@id/btnManageOtherPlayer"
         app:layout_constraintTop_toBottomOf="@id/btnAddCourse"
