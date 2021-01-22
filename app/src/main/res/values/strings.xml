@@ -28,7 +28,7 @@
     <string name="choosePlayerError">Veuillez remplir correctement les informations</string>
     <string name="playersTitle">Joueurs :</string>
     <string name="courseTitle">Parcours :</string>
-    <string name="startGame">Commencer</string>
+    <string name="startGame">Commencer la partie</string>
     <string name="loungeName">Salon %1$s</string>
     <string name="emptyCourse">Veuillez choisir un parcours</string>
     <string name="emptyLounge">Le salon choisit est vide</string>

@@ -2,26 +2,29 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="110dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:layout_rowWeight="1"
     android:layout_columnWeight="1"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
     <ImageView
         android:id="@+id/imageAvatarPreview"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:src="@drawable/man1" />
 
     <TextView
         android:id="@+id/nameAvatarPreview"
         style="@style/TextAppearance.GolfBook.Body1"
+        android:textSize="24sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         tools:text="Patrick"/>
 
 

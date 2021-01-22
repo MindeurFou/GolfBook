@@ -47,6 +47,7 @@ object RemoteLoungeMapper : EntityMapper<FirestoreLoungeEntity, Lounge> {
 
 
         return Lounge(
+                loungeId = loungeId,
                 name = entity.name,
                 playersInLounge = listPlayersInLounge,
                 playersReady = listPlayersReady,

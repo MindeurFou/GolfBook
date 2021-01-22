@@ -51,18 +51,21 @@ class HomeFragment : Fragment() {
         viewModelFactory = HomeViewModelFactory()
 
         // si on vient du fragment chooseAvatar => récupérer le player qui a été choisit
-        args.playerId?.let {
-            viewModel.retrievePlayerAndManagedPlayers(it) // MANAGED PLAYERS DÉSACTIVÉ TANT QUE L'APPLI N'EST PAS PLUS AVANCÉE
+        if (args.playerId != null) {
+            viewModel.retrievePlayerAndManagedPlayers(args.playerId!!) // MANAGED PLAYERS DÉSACTIVÉ TANT QUE L'APPLI N'EST PAS PLUS AVANCÉE
+        } else {
+            bindMainPlayer(mainViewModel.currentPlayer!!)
+            viewModel.mainPlayer = mainViewModel.currentPlayer!!
         }
 
-        mainViewModel.currentPlayer?.let { bindMainPlayer(it) }
+
+
+
+
 
         // =========== Recycler stuff ===========================
 
-        adapter = LoungeAdapter(
-                { lounge -> viewModel.setHomeEvent(HomeEvent.JoinLoungeEvent(lounge)) },
-                { lounge -> viewModel.setHomeEvent(HomeEvent.LeaveLoungeEvent(lounge)) }
-        )
+        adapter = LoungeAdapter { lounge -> viewModel.setHomeEvent(HomeEvent.JoinLoungeEvent(lounge)) }
 
         binding.loungeContainer.adapter = adapter
 
@@ -164,28 +167,35 @@ class HomeFragment : Fragment() {
             binding.managedPlayerLayout.requestLayout()
         }
 
-        viewModel.listCoursesName.observe(viewLifecycleOwner) { resource ->
+        viewModel.joinLoungeState.observe(viewLifecycleOwner) { resource ->
 
-            if (resource is Resource.Failure)
-                resource.exception.toast(requireContext())
+            when (resource) {
 
-            if (resource is Resource.Success)
-                adapter.updateCoursesList(resource.data)
+                is Resource.Loading -> {}
+
+                is Resource.Failure -> resource.exception.toast(requireContext())
+
+                is Resource.Success -> {
+                    navigateToLoungeDetailsFragment(resource.data) // courseId
+                }
+            }
         }
+
     }
 
     private fun navigateToChooseAvatarFragment(chooseAvatarAction: ChooseAvatarViewModel.Companion.chooseAvatarAction) {
-
-        val action = HomeFragmentDirections.actionHomeFragmentToChooseAvatarFragment(
-                chooseAvatarAction = chooseAvatarAction
-        )
-
+        val action = HomeFragmentDirections.actionHomeFragmentToChooseAvatarFragment(chooseAvatarAction = chooseAvatarAction)
         findNavController().navigate(action)
     }
 
     private fun navigateToCreateCourseFragment() = findNavController().navigate(R.id.action_homeFragment_to_createCourseFragment)
 
     private fun navigateToViewCoursesFragment() = findNavController().navigate(R.id.action_homeFragment_to_viewCoursesFragment)
+
+    private fun navigateToLoungeDetailsFragment(loungeId: String) {
+        val action = HomeFragmentDirections.actionHomeFragmentToLoungeDetailsFragment(loungeId)
+        findNavController().navigate(action)
+    }
 
 
     private fun updateSharedPref(playerId: String) {

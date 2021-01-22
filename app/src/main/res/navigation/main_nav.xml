@@ -23,11 +23,6 @@
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_gameViewPagerFragment"
-            app:destination="@id/gameViewPagerFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_homeFragment_to_chooseAvatarFragment"
             app:destination="@id/chooseAvatarFragment"
             app:popUpToInclusive="false" />
@@ -41,6 +36,9 @@
             android:name="playerId"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_loungeDetailsFragment"
+            app:destination="@id/loungeDetailsFragment" />
     </fragment>
 
     <fragment
@@ -116,6 +114,26 @@
         <argument
             android:name="courseName"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loungeDetailsFragment"
+        android:name="com.example.golfbook.ui.loungeDetails.LoungeDetailsFragment"
+        android:label="LoungeDetailsFragment"
+        tools:layout="@layout/fragment_lounge_details">
+        <action
+            android:id="@+id/action_loungeDetailsFragment_to_gameViewPagerFragment"
+            app:destination="@id/gameViewPagerFragment"
+            app:popUpTo="@id/loungeDetailsFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="loungeId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_loungeDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loungeDetailsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

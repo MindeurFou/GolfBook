@@ -22,39 +22,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Salon n°1" />
 
-    <TextView
-        android:id="@+id/courseTitle"
-        style="@style/TextAppearance.GolfBook.Body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/courseTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loungeTitle" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputCourse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseTitle">
-
-        <AutoCompleteTextView
-            android:id="@+id/editTextCourse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:maxLines="1"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/playersTitle"
@@ -66,54 +33,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputCourse" />
+        app:layout_constraintTop_toBottomOf="@id/loungeTitle" />
 
     <GridLayout
         android:id="@+id/playersContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
-        android:columnCount="2"
-        android:rowCount="2"
-        app:layout_constraintBottom_toTopOf="@+id/btnJoin"
+        android:columnCount="1"
+        android:rowCount="4"
+        app:layout_constraintBottom_toTopOf="@+id/btnJoinLounge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/playersTitle"/>
 
     <Button
-        android:id="@+id/btnStartGame"
+        android:id="@+id/btnJoinLounge"
         style="@style/Widget.GolfBook.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/startGame"
+        android:text="@string/joinLounge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btnJoin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="@color/secondaryLightColor"
-        android:src="@drawable/ic_join"
-        app:layout_constraintBottom_toTopOf="@+id/btnStartGame"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageButton
-        android:id="@+id/btnLeave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/secondaryLightColor"
-        android:src="@drawable/ic_quit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnJoin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

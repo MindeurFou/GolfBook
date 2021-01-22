@@ -9,81 +9,54 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.golfbook.R
 import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.ui.compoundedComponents.PlayerPreviewItem
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 
 
 class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val loungeName: TextView = itemView.findViewById(R.id.loungeTitle)
-    val courseEditText: AutoCompleteTextView = itemView.findViewById(R.id.editTextCourse)
     val playersContainer: GridLayout = itemView.findViewById(R.id.playersContainer)
-    val btnStart: Button = itemView.findViewById(R.id.btnStartGame)
-    val btnJoin: ImageButton = itemView.findViewById(R.id.btnJoin)
-    val btnLeave: ImageButton = itemView.findViewById(R.id.btnLeave)
+    val btnJoin: MaterialButton = itemView.findViewById(R.id.btnJoinLounge)
 
-    fun bind(lounge: Lounge, listCoursesName: List<String>) {
+    fun bind(lounge: Lounge) {
 
         loungeName.text = itemView.context.getString(R.string.loungeName, lounge.name)
 
-        val adapter = ArrayAdapter(itemView.context, R.layout.list_courses, listCoursesName)
-        courseEditText.setAdapter(adapter)
-
         lounge.playersInLounge?.let { players ->
 
+            playersContainer.removeAllViews()
+
             for (player in players) {
-                playersContainer.addView(PlayerPreviewItem(itemView.context, player))
+                playersContainer.addView(PlayerPreviewItem(itemView.context, player, PlayerPreviewItem.Companion.PlayerPreviewItemSize.SMALL))
             }
 
-        }
-
-        btnStart.setOnClickListener { view ->
-
-            if (lounge.courseName == null) {
-                Toast.makeText(view.context, R.string.emptyCourse, Toast.LENGTH_LONG).show()
-            } else {
-
-                lounge.playersInLounge?.let { players ->
-
-                    if (players.size == 1)
-                        Toast.makeText(view.context, R.string.lonelyPlayer, Toast.LENGTH_LONG).show()
-                    else {
-                        val action = HomeFragmentDirections.actionHomeFragmentToGameViewPagerFragment("bite")
-                        view.findNavController().navigate(action)
-                    }
-
-                } ?: Toast.makeText(view.context, R.string.emptyLounge, Toast.LENGTH_LONG).show()
-            }
+            playersContainer.invalidate()
+            playersContainer.requestLayout()
 
         }
-
 
     }
 
 }
 
 class LoungeAdapter(
-        private val joinLounge: (lounge: Lounge) -> Unit,
-        private val leaveLounge: (lounge: Lounge) -> Unit,
+        private val joinLounge: (lounge: Lounge) -> Unit
 ) : RecyclerView.Adapter<LoungeViewHolder>() {
 
     private var lounges: List<Lounge> = listOf()
-    private var listCoursesName: List<String> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoungeViewHolder {
-
-        val view =  LayoutInflater.from(parent.context).inflate(R.layout.item_lounge, parent, false)
-
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_lounge, parent, false)
         return LoungeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: LoungeViewHolder, position: Int) {
 
         val lounge = lounges[position]
-        holder.bind(lounge, listCoursesName)
+        holder.bind(lounge)
 
         holder.btnJoin.setOnClickListener { joinLounge(lounge) }
-        holder.btnLeave.setOnClickListener { leaveLounge(lounge) }
-
     }
 
 
@@ -91,11 +64,6 @@ class LoungeAdapter(
 
     fun updateLounges(lounges: List<Lounge>) {
         this.lounges = lounges
-        notifyDataSetChanged()
-    }
-
-    fun updateCoursesList(list: List<String>) {
-        this.listCoursesName = list
         notifyDataSetChanged()
     }
 

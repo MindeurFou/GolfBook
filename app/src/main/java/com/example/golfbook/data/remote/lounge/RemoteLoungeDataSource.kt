@@ -1,9 +1,9 @@
 package com.example.golfbook.data.remote.lounge
 
-import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.example.golfbook.data.model.Lounge
+import com.example.golfbook.data.model.Player
 import com.example.golfbook.utils.Resource
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -11,6 +11,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import kotlin.Exception
 
 
 object RemoteLoungeDataSource {
@@ -21,23 +22,8 @@ object RemoteLoungeDataSource {
 
     private val remoteLoungeMapper = RemoteLoungeMapper
 
-    suspend fun getRealTimeUpdatesOfLounges() : Flow<Resource<List<Lounge>>> = flow {
 
-        emit(Resource.Loading)
-
-        try {
-
-
-
-
-        } catch (e: Exception) {
-            emit(Resource.Failure(e))
-        }
-
-    }
-
-
-    fun subscribe(setLiveData: (Resource<List<Lounge>>) -> Unit) = loungeCollectionRef.addSnapshotListener { querySnapshot, firestoreException ->
+    fun subscribeToAllLounges(setLiveData: (Resource<List<Lounge>>) -> Unit) = loungeCollectionRef.addSnapshotListener { querySnapshot, firestoreException ->
 
             firestoreException?.let {
                 setLiveData(Resource.Failure(it))
@@ -60,60 +46,83 @@ object RemoteLoungeDataSource {
 
         }
 
+    fun subscribeToALounge(setLiveData: (Resource<Lounge>) -> Unit, loungeId: String) = loungeCollectionRef.document(loungeId).addSnapshotListener { querysnapshot, firestoreException ->
 
-
-    suspend fun joinLounge() {
-
-        loungeCollectionRef.addSnapshotListener { value, error ->
-
-            value?.documents?.get(1)?.get("playersInLounge")
+        firestoreException?.let {
+            setLiveData(Resource.Failure(it))
         }
 
-       // loungeCollectionRef.add().await()
-    }
+        querysnapshot?.let { documentSnapshot ->
 
-    suspend fun leaveLounge() : Lounge {
+            val firestoreLoungeEntity = documentSnapshot.toObject<FirestoreLoungeEntity>()
 
-        /*val loungeQuery = loungeCollectionRef
-                .whereEqualTo("loungeNumber", lounge.loungeNumber)
-                .get()
-                .await()
+            firestoreLoungeEntity?.let {
+                val lounge = remoteLoungeMapper.mapFromEntityWithId(it, documentSnapshot.id)
+                setLiveData(Resource.Success(lounge))
+            }
 
-        if (loungeQuery.documents.size == 1) {
-
-            val loungeId = loungeQuery.documents[0].id
-
-            val newLoungeMap: MutableMap<String, Any> = mutableMapOf() // TODO
-
-            loungeCollectionRef.document(loungeId).set(newLoungeMap, SetOptions.merge())
-
-
-        } else {
-            throw Exception("Query didn't work as expected")
-        }*/
-
-
-       return Lounge()
-
-    }
-
-    suspend fun testLounge() {
-
-        val query = loungeCollectionRef.get().await()
-
-        for (document in query.documents) {
-            Log.d("mdebug", document.data.toString())
         }
 
 
     }
 
-    suspend fun testLoungeWrite(firestoreLoungeEntity: FirestoreLoungeEntity) {
-
-        loungeCollectionRef.add(firestoreLoungeEntity).await()
 
 
+    fun joinLounge(lounge: Lounge, player: Player): Flow<Resource<String>> = flow {
+
+        emit(Resource.Loading)
+
+        try {
+
+            lounge.loungeId ?: throw Exception("Erreur pour récupérer le salon")
+
+            val nbPlayer = lounge.playersInLounge?.size
+
+            nbPlayer?.let {
+
+                if (it < 4 ) {
+
+                    val playersInLounge: MutableList<Player> = lounge.playersInLounge?.toMutableList() ?: mutableListOf()
+
+                    playersInLounge.add(player)
+
+                    loungeCollectionRef.document(lounge.loungeId).update(mapOf("playersInLounge" to playersInLounge)).await()
+
+                    emit(Resource.Success(lounge.loungeId))
+                } else
+                    throw Exception("Le salon est déjà plein")
+
+            } ?: throw Exception("Erreur pour récupérer le salon")
+
+
+        } catch (e: Exception) {
+            emit(Resource.Failure(e))
+        }
+    }
+
+    fun leaveLounge(lounge: Lounge, player: Player) : Flow<Resource<Unit>> = flow {
+
+        emit(Resource.Loading)
+
+        try {
+
+            lounge.loungeId ?: throw Exception("Erreur pour récupérer le salon")
+
+            if (lounge.playersInLounge!!.any { it == player }) {
+
+                val playerInLounge = lounge.playersInLounge!!.toMutableList()
+
+                if (playerInLounge.remove(player)) {
+                    loungeCollectionRef.document(lounge.loungeId).update("playersInLounge", playerInLounge).await()
+                    emit(Resource.Success(Unit))
+                }
+            }
+
+        } catch (e: Exception) {
+            emit(Resource.Failure(e))
+        }
 
     }
+
 
 }
