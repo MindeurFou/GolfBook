@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.golfbook.R
 import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.ui.compoundedComponents.PlayerPreviewItem
+import com.example.golfbook.ui.compoundedComponents.PlayerPreviewItemSize
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 
@@ -28,7 +29,7 @@ class LoungeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             playersContainer.removeAllViews()
 
             for (player in players) {
-                playersContainer.addView(PlayerPreviewItem(itemView.context, player, PlayerPreviewItem.Companion.PlayerPreviewItemSize.SMALL))
+                playersContainer.addView(PlayerPreviewItem(itemView.context, player, PlayerPreviewItemSize.SMALL))
             }
 
             playersContainer.invalidate()

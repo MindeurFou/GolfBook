@@ -3,16 +3,11 @@ package com.example.golfbook.ui.home
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TableRow
 import android.widget.TextView
-import android.widget.Toast
-import androidx.compose.ui.text.font.font
-import androidx.compose.ui.text.font.fontFamily
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -54,8 +49,8 @@ class HomeFragment : Fragment() {
         if (args.playerId != null) {
             viewModel.retrievePlayerAndManagedPlayers(args.playerId!!) // MANAGED PLAYERS DÉSACTIVÉ TANT QUE L'APPLI N'EST PAS PLUS AVANCÉE
         } else {
-            bindMainPlayer(mainViewModel.currentPlayer!!)
-            viewModel.mainPlayer = mainViewModel.currentPlayer!!
+            bindMainPlayer(mainViewModel.localPlayer!!)
+            viewModel.mainPlayer = mainViewModel.localPlayer!!
         }
 
 
@@ -87,13 +82,13 @@ class HomeFragment : Fragment() {
 
 
         binding.btnUpdatePlayer.setOnClickListener {
-          mainViewModel.currentPlayer?.let {
+          mainViewModel.localPlayer?.let {
                 navigateToChooseAvatarFragment(ChooseAvatarViewModel.Companion.chooseAvatarAction.UPDATE_MAIN_PLAYER)
             }
         }
 
         binding.btnManageOtherPlayer.setOnClickListener {
-            mainViewModel.currentPlayer?.let {
+            mainViewModel.localPlayer?.let {
                 navigateToChooseAvatarFragment(ChooseAvatarViewModel.Companion.chooseAvatarAction.CREATE_MANAGED_PLAYER)
             }
         }
@@ -124,7 +119,7 @@ class HomeFragment : Fragment() {
 
                     bindMainPlayer(player)
 
-                    mainViewModel.currentPlayer = player
+                    mainViewModel.localPlayer = player
                     updateSharedPref(player.playerId!!)
 
                 }

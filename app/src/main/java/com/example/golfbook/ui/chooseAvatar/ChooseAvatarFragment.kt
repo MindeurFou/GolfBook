@@ -1,31 +1,22 @@
 package com.example.golfbook.ui.chooseAvatar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.navArgument
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.golfbook.R
 import com.example.golfbook.databinding.FragmentChooseAvatarBinding
-import com.example.golfbook.data.model.Player
 import com.example.golfbook.extensions.ExceptionExtensions.toast
 import com.example.golfbook.extensions.ViewExtensions.textChanges
 import com.example.golfbook.ui.ActivityViewModel
-import com.example.golfbook.ui.home.HomeEvent
 import com.example.golfbook.utils.Resource
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -54,7 +45,7 @@ class ChooseAvatarFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = FragmentChooseAvatarBinding.inflate(layoutInflater)
-        chooseAvatarViewModelFactory = ChooseAvatarViewModelFactory(mainViewModel.currentPlayer)
+        chooseAvatarViewModelFactory = ChooseAvatarViewModelFactory(mainViewModel.localPlayer)
         viewModel.processArgs(args)
 
 

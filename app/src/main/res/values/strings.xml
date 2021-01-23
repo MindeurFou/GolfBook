@@ -18,6 +18,22 @@
         <item>@string/knownNameHeader2</item>
     </string-array>
 
+    <string name="playerReady1"> est prêt à en découdre</string>
+    <string name="playerReady2"> va rafler la mise</string>
+    <string name="playerReady3"> est là pour remporter la victoire</string>
+    <string name="playerReady4"> attend les retardataires</string>
+    <string name="playerReady5"> n\'est pas là pour rigoler</string>
+    <string name="playerReady6"> est prêt pour la gloire</string>
+
+    <string-array name="playerReadyArray">
+        <item>@string/playerReady1</item>
+        <item>@string/playerReady2</item>
+        <item>@string/playerReady3</item>
+        <item>@string/playerReady4</item>
+        <item>@string/playerReady5</item>
+        <item>@string/playerReady6</item>
+    </string-array>
+
 
     <string name="nameEditText">Entrez votre nom</string>
     <string name="btnUpdatePlayer">Changer l\'avatar</string>
@@ -48,4 +64,10 @@
     <string name="numberOfHoles">Nombre de trous : </string>
     <string name="parNumber">Par : </string>
     <string name="holeNumber">Trou n° %1$d : </string>
+
+    <string name="starting_dialog_title">La partie va commencer</string>
+    <string name="starting_dialog_message">Êtes vous prêt ?</string>
+    <string name="starting_dialog_decline">Non</string>
+    <string name="starting_dialog_accept">Oui</string>
+    <string name="joinGame">Rejoindre la partie</string>
 </resources>

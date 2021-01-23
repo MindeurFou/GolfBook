@@ -2,6 +2,7 @@ package com.example.golfbook.ui.loungeDetails
 
 import androidx.lifecycle.*
 import com.example.golfbook.data.model.Lounge
+import com.example.golfbook.data.model.LoungeDetails
 import com.example.golfbook.data.model.Player
 import com.example.golfbook.data.repository.CourseRepository
 import com.example.golfbook.data.repository.LoungeRepository
@@ -26,7 +27,7 @@ class LoungeDetailsViewModelFactory(private val args: LoungeDetailsFragmentArgs,
 
 class LoungeDetailsViewModel(
         args: LoungeDetailsFragmentArgs,
-        private val mainPlayer: Player
+        private val localPlayer: Player
 ) : ViewModel() {
 
     private val loungeRepo = LoungeRepository
@@ -38,8 +39,14 @@ class LoungeDetailsViewModel(
     private val _lounge: MutableLiveData<Resource<Lounge>> = MutableLiveData()
     val lounge: LiveData<Resource<Lounge>> = _lounge
 
+    private val _loungeDetails: MutableLiveData<Resource<LoungeDetails>> = MutableLiveData()
+    val loungeDetails: LiveData<Resource<LoungeDetails>> = _loungeDetails
+
     private val _leaveLoungeState: MutableLiveData<Resource<Unit>> = MutableLiveData()
     val leaveLoungeState: LiveData<Resource<Unit>> = _leaveLoungeState
+
+    private val _launchGameState: MutableLiveData<String> = MutableLiveData()
+    val launchGameState: LiveData<String> = _launchGameState
 
     private val courseNameRegistration = courseRepo.subscribeToCourseName { names ->
         _listCoursesName.value = names
@@ -49,6 +56,12 @@ class LoungeDetailsViewModel(
         _lounge.value = loungeResource
     }
 
+    private val loungeDetailsListenerRegistration = loungeRepo.subscribeToLoungeDetails(args.loungeId) { loungeDetailsResource ->
+        _loungeDetails.value = loungeDetailsResource
+    }
+
+    var localPlayerIsAdmin = false
+
 
     fun leaveLounge() {
 
@@ -56,10 +69,84 @@ class LoungeDetailsViewModel(
 
             val lounge = (lounge.value as Resource.Success<Lounge>).data
 
-            loungeRepo.leaveLounge(lounge, mainPlayer).onEach {
+            loungeRepo.leaveLounge(lounge, localPlayer).onEach {
                 _leaveLoungeState.value = it
             }.launchIn(viewModelScope)
         }
+
+    }
+
+    fun updateCourseName(courseName: String) {
+
+        if ( lounge.value is Resource.Success) {
+
+            val lounge = (lounge.value as Resource.Success<Lounge>).data
+
+            loungeRepo.updateCourseName(courseName, lounge).launchIn(viewModelScope)
+
+        }
+    }
+
+    fun startGame() {
+
+        if ( lounge.value is Resource.Success) {
+
+            val lounge = (lounge.value as Resource.Success<Lounge>).data
+
+            if (lounge.courseName == null)
+                throw Exception("Vous devez choisir un parcours")
+
+            localPlayerIsAdmin = true
+
+            loungeRepo.startGame(lounge, localPlayer.name!!).launchIn(viewModelScope)
+
+        }
+    }
+
+    fun acceptStart() {
+
+        if ( lounge.value is Resource.Success) {
+
+            val lounge = (lounge.value as Resource.Success<Lounge>).data
+
+            loungeRepo.acceptStart(lounge, localPlayer.name!!).launchIn(viewModelScope)
+
+        }
+
+    }
+
+    fun refuseStart() {
+
+        if ( lounge.value is Resource.Success) {
+
+            val lounge = (lounge.value as Resource.Success<Lounge>).data
+
+            lounge.loungeId?.let {
+                loungeRepo.refuseStart(it)
+            }
+
+
+        }
+
+    }
+
+    fun maybeLaunchGame() {
+
+        if (lounge.value is Resource.Success && loungeDetails.value is Resource.Success) {
+
+            val lounge = (lounge.value!! as Resource.Success).data
+
+            val nbPlayersInLounge = lounge.playersInLounge!!.size
+            val nbPlayersReady = (loungeDetails.value!! as Resource.Success).data.playersReady?.size
+
+            nbPlayersReady?.let {
+
+                if (it == nbPlayersInLounge) {
+                    _launchGameState.value = lounge.loungeId!!
+                }
+            }
+        }
+
 
     }
 
@@ -67,6 +154,7 @@ class LoungeDetailsViewModel(
         super.onCleared()
         courseNameRegistration.remove()
         loungeListenerRegistration.remove()
+        loungeDetailsListenerRegistration.remove()
     }
 
 

@@ -5,6 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.golfbook.data.model.*
+import com.example.golfbook.data.repository.GameRepository
+import com.example.golfbook.data.repository.LoungeRepository
+import com.example.golfbook.utils.Resource
+import com.google.firebase.firestore.ListenerRegistration
 import java.lang.IllegalArgumentException
 
 
@@ -23,34 +27,58 @@ class GameViewModelFactory(private val args: GameViewPagerFragmentArgs) : ViewMo
 
 }
 
-class GameViewModel(args: GameViewPagerFragmentArgs) : ViewModel() {
+class GameViewModel(
+        args: GameViewPagerFragmentArgs
+) : ViewModel() {
+
+    private val gameRepo = GameRepository
+    private val loungeRepo = LoungeRepository
 
     private val _scorebook: MutableLiveData<Scorebook> = MutableLiveData()
     val scorebook: LiveData<Scorebook> = _scorebook
 
-    val game: Game = Game(
-        players = TODO(),
-        course = TODO(),
-        currentHole = TODO()
-    )
+    private val _createGameState: MutableLiveData<Resource<Unit>> = MutableLiveData()
+    val createGameState: LiveData<Resource<Unit>> = _createGameState
 
-    init {
+    private val _lounge: MutableLiveData<Resource<Lounge>> = MutableLiveData(Resource.Loading)
+    val lounge: LiveData<Resource<Lounge>> = _lounge
 
-        val gameId = args.gameId
+    private val _game: MutableLiveData<Resource<Game>> = MutableLiveData()
+    val game: LiveData<Resource<Game>> = _game
 
-        /*game.course = lounge.course as Course
 
-        game.players = lounge.players!!
-        game.initScoreBook()
+    private val loungeListenerRegistration = loungeRepo.subscribeToALounge(args.loungeId) { loungeResource ->
+        _lounge.value = loungeResource
 
-        _scorebook.value = TODO()*/
+       // if (loungeResource contains la game)
     }
 
+    private lateinit var gameListenerRegistration: ListenerRegistration
 
 
     val liveScoreBook: MutableLiveData<Map<Hole, MutableMap<Player, Int>>> by lazy {
         MutableLiveData<Map<Hole, MutableMap<Player, Int>>>()
     }
+
+
+
+
+
+    init {
+
+        if (args.localPlayerIsAdmin) {
+            gameRepo.createGame(args.loungeId)
+        }
+    }
+
+    fun subscribeToGame(gameId: String) {
+
+        gameListenerRegistration = gameRepo.subscribeToGame(gameId) {
+            _game.value = it
+        }
+    }
+
+
 
 
 }

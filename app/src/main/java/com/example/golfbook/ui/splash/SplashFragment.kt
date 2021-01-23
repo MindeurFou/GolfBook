@@ -54,7 +54,7 @@ class SplashFragment : Fragment() {
                 playerRepo.getPlayer(playerId).onEach { resource ->
 
                     if (resource is Resource.Success) {
-                        mainViewModel.currentPlayer = resource.data
+                        mainViewModel.localPlayer = resource.data
                         navigateToChooseAvatarFragment(ChooseAvatarViewModel.Companion.chooseAvatarAction.UPDATE_MAIN_PLAYER)
                     }
 

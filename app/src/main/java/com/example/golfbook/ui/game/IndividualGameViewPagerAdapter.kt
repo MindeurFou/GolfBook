@@ -1,4 +1,4 @@
-package com.example.golfbook.ui.adapters
+package com.example.golfbook.ui.game
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

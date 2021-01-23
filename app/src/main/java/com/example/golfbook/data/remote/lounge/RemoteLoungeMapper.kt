@@ -30,43 +30,14 @@ object RemoteLoungeMapper : EntityMapper<FirestoreLoungeEntity, Lounge> {
             }
         }
 
-        var listPlayersReady: MutableList<Player>? = null
-
-        entity.playersReady?.let {
-
-            listPlayersReady = mutableListOf()
-
-            for (name in it){
-
-                val player = findPlayerInListByName(name, listPlayersInLounge!!)
-                if (player != null) {
-                    listPlayersReady!!.add(player)
-                }
-            }
-        }
-
-
         return Lounge(
                 loungeId = loungeId,
                 name = entity.name,
                 playersInLounge = listPlayersInLounge,
-                playersReady = listPlayersReady,
                 state = entity.state,
                 courseName = entity.courseName
         )
 
     }
-
-    private fun findPlayerInListByName(name: String, list: List<Player>) : Player? {
-
-        for (player in list) {
-            if (player.name!! == name) {
-                return player
-            }
-        }
-
-        return null
-    }
-
 
 }

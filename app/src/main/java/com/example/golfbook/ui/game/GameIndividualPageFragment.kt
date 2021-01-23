@@ -1,10 +1,10 @@
 package com.example.golfbook.ui.game
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,8 +22,7 @@ class GameIndividualPageFragment(val player: Player) : Fragment() {
     private val viewModel: GameViewModel by viewModels()
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = FragmentGameIndividualBinding.inflate(inflater)
 
@@ -33,13 +32,13 @@ class GameIndividualPageFragment(val player: Player) : Fragment() {
 
         // ======== Avatar ===========
         binding.name.text = player.name
-        binding.imageAvatar.setImageDrawable(requireContext().getDrawable(player.drawableResourceId))
+        binding.imageAvatar.setImageDrawable(ContextCompat.getDrawable(requireContext(), player.drawableResourceId))
 
 
 
         // ======== Score ===========
         binding.scoreboard.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.scoreboard.adapter = IndividualScoreboardAdapter(viewModel.game.scoreBook!![player]!!)
+       // binding.scoreboard.adapter = IndividualScoreboardAdapter(viewModel.game.scoreBook!![player]!!)
 
 
         viewModel.liveScoreBook.observe(viewLifecycleOwner) { updateScores() }

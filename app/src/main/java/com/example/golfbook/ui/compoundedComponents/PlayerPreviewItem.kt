@@ -20,8 +20,7 @@ class PlayerPreviewItem(context: Context, player: Player, playerPreviewItemSize:
         view.findViewById<TextView>(R.id.nameAvatarPreview).text = player.name
     }
 
-    companion object {
 
-        enum class PlayerPreviewItemSize { SMALL, BIG }
-    }
 }
+
+enum class PlayerPreviewItemSize { SMALL, BIG }

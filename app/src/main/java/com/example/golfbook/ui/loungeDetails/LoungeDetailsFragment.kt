@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,8 +18,11 @@ import com.example.golfbook.databinding.FragmentLoungeDetailsBinding
 import com.example.golfbook.extensions.ExceptionExtensions.toast
 import com.example.golfbook.ui.ActivityViewModel
 import com.example.golfbook.ui.compoundedComponents.PlayerPreviewItem
+import com.example.golfbook.ui.compoundedComponents.PlayerPreviewItemSize
 import com.example.golfbook.utils.Resource
-import java.lang.StringBuilder
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlin.random.Random
+import kotlin.text.StringBuilder
 
 class LoungeDetailsFragment : Fragment() {
 
@@ -32,24 +38,53 @@ class LoungeDetailsFragment : Fragment() {
             factoryProducer =  { viewModelFactory }
     )
 
+    private val listPlayersReady: MutableList<Pair<String,String>> = mutableListOf()
+    private var dialog: AlertDialog? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+                val state = (viewModel.lounge.value!! as Resource.Success).data.state
+
+                state?.let {
+                    if (it == "available")
+                        viewModel.leaveLounge()
+                }
+
+            }
+        })
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = FragmentLoungeDetailsBinding.inflate(inflater)
-        viewModelFactory = LoungeDetailsViewModelFactory(args, mainViewModel.currentPlayer!!)
+        viewModelFactory = LoungeDetailsViewModelFactory(args, mainViewModel.localPlayer!!)
 
         val adapter = ArrayAdapter(requireContext(), R.layout.list_courses, listOf<String>())
         binding.editTextCourse.setAdapter(adapter)
 
-
         subscribeObservers()
+
+        binding.editTextCourse.setOnItemClickListener { parent, view, position, id ->
+
+            val courseName = parent.getItemAtPosition(position).toString()
+
+            viewModel.updateCourseName(courseName)
+        }
 
 
         binding.btnLeave.setOnClickListener { viewModel.leaveLounge() }
 
-        binding.btnStart.setOnClickListener { view ->
-
+        binding.btnStart.setOnClickListener {
+            try {
+                viewModel.startGame()
+            } catch (e: Exception) {
+                e.toast(requireContext())
+            }
         }
 
 
@@ -86,7 +121,7 @@ class LoungeDetailsFragment : Fragment() {
 
                 for (player in lounge.playersInLounge!!) {
 
-                    val item = PlayerPreviewItem(requireContext(), player, PlayerPreviewItem.Companion.PlayerPreviewItemSize.BIG)
+                    val item = PlayerPreviewItem(requireContext(), player, PlayerPreviewItemSize.BIG)
                     binding.playersContainer.addView(item)
 
                 }
@@ -94,11 +129,78 @@ class LoungeDetailsFragment : Fragment() {
                 binding.playersContainer.invalidate()
                 binding.playersContainer.requestLayout()
 
-                val sb = StringBuilder()
-                // TODO afficher un textview des playersReady une fois que le backend est fait
 
+                if (!lounge.courseName.isNullOrBlank()){
+                    binding.editTextCourse.setText(lounge.courseName, false)
+                }
+
+                lounge.state?.let { state ->
+
+
+                    when(state) {
+
+                        "starting" -> {
+
+                            binding.btnStart.visibility = View.GONE
+                            binding.btnLeave.visibility = View.GONE
+
+                            if (!viewModel.localPlayerIsAdmin) {
+
+                                dialog = MaterialAlertDialogBuilder(requireContext())
+                                        .setTitle(resources.getString(R.string.starting_dialog_title))
+                                        .setMessage(resources.getString(R.string.starting_dialog_message))
+                                        .setNegativeButton(resources.getString(R.string.starting_dialog_decline)) { _, _ ->
+                                            viewModel.refuseStart()
+                                        }
+                                        .setPositiveButton(resources.getString(R.string.starting_dialog_accept)) { _, _ ->
+                                            viewModel.acceptStart()
+                                        }
+                                        .setCancelable(false)
+                                        .show()
+                            }
+
+
+
+
+                        }
+
+                        "available" -> {
+
+                            dialog?.dismiss()
+                            dialog = null
+
+                            binding.btnStart.visibility = View.VISIBLE
+                            binding.btnLeave.visibility = View.VISIBLE
+                        }
+
+                        "busy" -> {}
+
+                        else -> Toast.makeText(requireContext(), "État du salon inconnu : $state", Toast.LENGTH_LONG).show()
+                    }
+
+
+                }
             }
 
+        }
+
+        viewModel.loungeDetails.observe(viewLifecycleOwner) { resource ->
+
+            if (resource is Resource.Failure)
+                resource.exception.toast(requireContext())
+            else if (resource is Resource.Success) {
+
+                val playerReady = resource.data.playersReady
+                playerReady?.let {
+                    updatePlayersReadyText(it)
+
+                    if (viewModel.localPlayerIsAdmin)
+                        viewModel.maybeLaunchGame()
+                }
+
+
+
+            }
         }
 
         viewModel.leaveLoungeState.observe(viewLifecycleOwner) { resource ->
@@ -109,6 +211,44 @@ class LoungeDetailsFragment : Fragment() {
             }
         }
 
+        viewModel.launchGameState.observe(viewLifecycleOwner) {
+            navigateToGameFragment(viewModel.localPlayerIsAdmin, it) //loungeId
+        }
+
+
+    }
+
+    private fun updatePlayersReadyText(playersReady: List<String>) {
+
+        if (playersReady.isNotEmpty()) {
+
+            playersReady.forEach { name ->
+
+                if (name.isNotBlank()) {
+                    if (listPlayersReady.all { it.first != name }) {
+
+                        val textArray: Array<String> = resources.getStringArray(R.array.playerReadyArray)
+                        val index = Random.nextInt(textArray.size)
+                        val text = textArray[index]
+
+                        listPlayersReady.add(Pair(name, text))
+                    }
+                }
+            }
+
+            val sb = StringBuilder()
+
+            listPlayersReady.forEachIndexed { index, pair ->
+                sb.append(pair.first).append(" ${pair.second}")
+                if (index != listPlayersReady.size -1)
+                    sb.append("\n")
+            }
+
+            binding.playersReadyTextView.text = sb.toString()
+        } else {
+            binding.playersReadyTextView.text = null
+        }
+
 
     }
 
@@ -117,8 +257,8 @@ class LoungeDetailsFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun navigateToGameFragment() {
-        val action = LoungeDetailsFragmentDirections.actionLoungeDetailsFragmentToGameViewPagerFragment("updateHere")
+    private fun navigateToGameFragment(localPlayerIsAdmin: Boolean, loungeId: String) {
+        val action = LoungeDetailsFragmentDirections.actionLoungeDetailsFragmentToGameViewPagerFragment(loungeId, localPlayerIsAdmin)
         findNavController().navigate(action)
     }
 

@@ -6,6 +6,5 @@ data class FirestoreLoungeEntity(
         val courseName: String? = null,
         val name: String? = null,
         val state: String? = null,
-        val playersReady: List<String>? = null,
         val playersInLounge: List<FirestorePlayerEntity>? = null
 )
