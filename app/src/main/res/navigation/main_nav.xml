@@ -52,11 +52,8 @@
             app:popUpTo="@id/gameViewPagerFragment"
             app:popUpToInclusive="true" />
         <argument
-            android:name="loungeId"
+            android:name="gameId"
             app:argType="string" />
-        <argument
-            android:name="localPlayerIsAdmin"
-            app:argType="boolean" />
     </fragment>
 
     <fragment

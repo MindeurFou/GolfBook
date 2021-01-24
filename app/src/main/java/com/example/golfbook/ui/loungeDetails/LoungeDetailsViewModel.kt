@@ -5,6 +5,7 @@ import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.data.model.LoungeDetails
 import com.example.golfbook.data.model.Player
 import com.example.golfbook.data.repository.CourseRepository
+import com.example.golfbook.data.repository.GameRepository
 import com.example.golfbook.data.repository.LoungeRepository
 import com.example.golfbook.utils.Resource
 import kotlinx.coroutines.flow.launchIn
@@ -32,6 +33,7 @@ class LoungeDetailsViewModel(
 
     private val loungeRepo = LoungeRepository
     private val courseRepo = CourseRepository
+    private val gameRepo = GameRepository
 
     private val _listCoursesName: MutableLiveData<Resource<List<String>>> = MutableLiveData()
     val listCoursesName: LiveData<Resource<List<String>>> = _listCoursesName
@@ -44,9 +46,6 @@ class LoungeDetailsViewModel(
 
     private val _leaveLoungeState: MutableLiveData<Resource<Unit>> = MutableLiveData()
     val leaveLoungeState: LiveData<Resource<Unit>> = _leaveLoungeState
-
-    private val _launchGameState: MutableLiveData<String> = MutableLiveData()
-    val launchGameState: LiveData<String> = _launchGameState
 
     private val courseNameRegistration = courseRepo.subscribeToCourseName { names ->
         _listCoursesName.value = names
@@ -98,7 +97,7 @@ class LoungeDetailsViewModel(
 
             localPlayerIsAdmin = true
 
-            loungeRepo.startGame(lounge, localPlayer.name!!).launchIn(viewModelScope)
+            loungeRepo.startGame(lounge, localPlayer.name).launchIn(viewModelScope)
 
         }
     }
@@ -109,7 +108,7 @@ class LoungeDetailsViewModel(
 
             val lounge = (lounge.value as Resource.Success<Lounge>).data
 
-            loungeRepo.acceptStart(lounge, localPlayer.name!!).launchIn(viewModelScope)
+            loungeRepo.acceptStart(lounge, localPlayer.name).launchIn(viewModelScope)
 
         }
 
@@ -142,7 +141,12 @@ class LoungeDetailsViewModel(
             nbPlayersReady?.let {
 
                 if (it == nbPlayersInLounge) {
-                    _launchGameState.value = lounge.loungeId!!
+                    gameRepo.createGame(lounge.loungeId!!).onEach { resourceGameId ->
+
+                        if (resourceGameId is Resource.Success)
+                            loungeRepo.setGameId(lounge.loungeId, resourceGameId.data)
+
+                    }.launchIn(viewModelScope)
                 }
             }
         }

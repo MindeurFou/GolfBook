@@ -15,7 +15,7 @@ object RemotePlayerMapper : EntityMapper<FirestorePlayerEntity, Player> {
 
         return Player(
                 playerId = null,
-                name = entity.name,
+                name = entity.name!!,
                 drawableResourceId = drawableResourceId,
                 managerId = entity.managerId
         )
@@ -30,7 +30,7 @@ object RemotePlayerMapper : EntityMapper<FirestorePlayerEntity, Player> {
 
         return Player(
                 playerId = entityId,
-                name = entity.name,
+                name = entity.name!!,
                 drawableResourceId = drawableResourceId,
                 managerId = entity.managerId
         )

@@ -1,17 +1,15 @@
 package com.example.golfbook.data.model
 
-import java.lang.Exception
-import java.lang.IllegalArgumentException
-
-
 data class Game (
-    val players: List<Player>,
-    val course: Course,
-    var scoreBook: Map<Player, MutableMap<Hole, Int>>? = null, // TODO mettre scorebook dans une classe pour centraliser les fonctions de traitements
-    var currentHole: Hole
+        val players: List<Player>?,
+        val course: Course?,
+        var scoreBook: Map< String, List<Int?> >
     ) {
 
 
+
+
+/*
     fun initScoreBook() {
 
         val _scoreBook: MutableMap<Player, MutableMap<Hole, Int>> = mutableMapOf()
@@ -63,6 +61,6 @@ data class Game (
 
         if (holeIsComplete)
             currentHole = course.getNextHole(currentHole)*/
-    }
+    }*/
 
 }

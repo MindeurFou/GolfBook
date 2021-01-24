@@ -263,4 +263,12 @@ object RemoteLoungeDataSource {
     }
 
 
+    fun setGameId(loungeId: String, gameId: String) {
+
+        val loungeDetailsDocumentRef = loungeCollectionRef.document(loungeId).collection("loungeDetails").document("loungeDetails")
+
+        loungeDetailsDocumentRef.update("gameId", gameId)
+    }
+
+
 }

@@ -198,8 +198,11 @@ class LoungeDetailsFragment : Fragment() {
                         viewModel.maybeLaunchGame()
                 }
 
+                resource.data.gameId?.let {
 
-
+                    if (it.isNotBlank())
+                        navigateToGameFragment(it)
+                }
             }
         }
 
@@ -210,11 +213,6 @@ class LoungeDetailsFragment : Fragment() {
                 navigateToHomeFragment()
             }
         }
-
-        viewModel.launchGameState.observe(viewLifecycleOwner) {
-            navigateToGameFragment(viewModel.localPlayerIsAdmin, it) //loungeId
-        }
-
 
     }
 
@@ -257,8 +255,8 @@ class LoungeDetailsFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun navigateToGameFragment(localPlayerIsAdmin: Boolean, loungeId: String) {
-        val action = LoungeDetailsFragmentDirections.actionLoungeDetailsFragmentToGameViewPagerFragment(loungeId, localPlayerIsAdmin)
+    private fun navigateToGameFragment(gameId: String) {
+        val action = LoungeDetailsFragmentDirections.actionLoungeDetailsFragmentToGameViewPagerFragment(gameId)
         findNavController().navigate(action)
     }
 

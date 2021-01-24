@@ -51,7 +51,7 @@ class ChooseAvatarViewModel(
             chooseAvatarAction.CREATE_MAIN_PLAYER -> {
                 _player.value = Player(
                         playerId = null,
-                        name = null,
+                        name = "",
                         drawableResourceId = R.drawable.man1,
                         managerId = null
                 )
@@ -61,7 +61,7 @@ class ChooseAvatarViewModel(
 
                 _player.value = Player(
                         playerId = null,
-                        name = null,
+                        name = "",
                         drawableResourceId = R.drawable.man1,
                         managerId = currentPlayer?.playerId ?: throw Exception("managedPlayer without manager")
                 )

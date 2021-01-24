@@ -1,19 +1,17 @@
 package com.example.golfbook.ui.game
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.example.golfbook.data.model.*
 import com.example.golfbook.data.repository.GameRepository
-import com.example.golfbook.data.repository.LoungeRepository
 import com.example.golfbook.utils.Resource
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.lang.IllegalArgumentException
 
 
 @Suppress("UNCHECKED_CAST")
-class GameViewModelFactory(private val args: GameViewPagerFragmentArgs) : ViewModelProvider.Factory {
+class GameViewModelFactory(private val args: GameViewPagerFragmentArgs?) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
@@ -28,57 +26,45 @@ class GameViewModelFactory(private val args: GameViewPagerFragmentArgs) : ViewMo
 }
 
 class GameViewModel(
-        args: GameViewPagerFragmentArgs
+        args: GameViewPagerFragmentArgs?
 ) : ViewModel() {
 
     private val gameRepo = GameRepository
-    private val loungeRepo = LoungeRepository
-
-    private val _scorebook: MutableLiveData<Scorebook> = MutableLiveData()
-    val scorebook: LiveData<Scorebook> = _scorebook
-
-    private val _createGameState: MutableLiveData<Resource<Unit>> = MutableLiveData()
-    val createGameState: LiveData<Resource<Unit>> = _createGameState
-
-    private val _lounge: MutableLiveData<Resource<Lounge>> = MutableLiveData(Resource.Loading)
-    val lounge: LiveData<Resource<Lounge>> = _lounge
 
     private val _game: MutableLiveData<Resource<Game>> = MutableLiveData()
     val game: LiveData<Resource<Game>> = _game
 
+    private val _initialGame: MutableLiveData<Resource<Game>> = MutableLiveData()
+    val intialGame: LiveData<Resource<Game>> = _initialGame
 
-    private val loungeListenerRegistration = loungeRepo.subscribeToALounge(args.loungeId) { loungeResource ->
-        _lounge.value = loungeResource
 
-       // if (loungeResource contains la game)
+    private val gameListenerRegistration: ListenerRegistration? = args?.let {
+        gameRepo.subscribeToGameScorebook(args.gameId) { scorebook ->
+
+            if (_game.value is Resource.Success)
+                _game.value = _game.value.apply {
+                    (this as Resource.Success).data.scoreBook = scorebook
+                }
+        }
     }
 
-    private lateinit var gameListenerRegistration: ListenerRegistration
-
-
-    val liveScoreBook: MutableLiveData<Map<Hole, MutableMap<Player, Int>>> by lazy {
-        MutableLiveData<Map<Hole, MutableMap<Player, Int>>>()
-    }
-
-
-
-
+    // TODO gérer ce bail d'abonnement aux modifications de scorebook. Est ce que la même instance du viewmodel est partagé ?
 
     init {
 
-        if (args.localPlayerIsAdmin) {
-            gameRepo.createGame(args.loungeId)
-        }
+        gameRepo.getInitialGame().onEach {
+            _initialGame.value = it
+        }.launchIn(viewModelScope)
+
+        // loungeRepo.freeLounge()  args = rajouter isAdminPlayer et loungeId  TODO
     }
 
-    fun subscribeToGame(gameId: String) {
-
-        gameListenerRegistration = gameRepo.subscribeToGame(gameId) {
-            _game.value = it
-        }
+    fun setGame(game: Resource<Game>) {
+        _game.value = game
     }
 
-
-
-
+    override fun onCleared() {
+        super.onCleared()
+        gameListenerRegistration.remove()
+    }
 }

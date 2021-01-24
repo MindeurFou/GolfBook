@@ -1,8 +1,6 @@
 package com.example.golfbook.data.repository
 
-import com.example.golfbook.data.model.Game
 import com.example.golfbook.data.remote.game.RemoteGameDataSource
-import com.example.golfbook.utils.Resource
 
 object GameRepository {
 
@@ -10,5 +8,7 @@ object GameRepository {
 
     fun createGame(loungeId: String) = remoteGameDataSource.createGame(loungeId)
 
-    fun subscribeToGame(gameId: String, setLiveData: (Resource<Game>) -> Unit) = remoteGameDataSource.subscribeToGame(gameId, setLiveData)
+    fun subscribeToGameScorebook(gameId: String, setLiveData: (Map<String, List<Int?>>) -> Unit) = remoteGameDataSource.subscribeToGame(gameId, setLiveData)
+
+    fun getInitialGame() = remoteGameDataSource.getInitialGame()
 }

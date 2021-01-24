@@ -7,19 +7,22 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.golfbook.databinding.FragmentGameIndividualBinding
 import com.example.golfbook.data.model.Player
 import com.example.golfbook.ui.adapters.IndividualScoreboardAdapter
 
 
-class GameIndividualPageFragment(val player: Player) : Fragment() {
+class GameIndividualPageFragment(
+        val player: Player
+) : Fragment() {
 
     private lateinit var binding: FragmentGameIndividualBinding
 
-    //private val args: GameIndividualPageFragmentArgs by navArgs()
-
-    private val viewModel: GameViewModel by viewModels()
+    private val viewModel: GameViewModel by viewModels(
+            factoryProducer = GameViewModelFactory(null)
+    )
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -41,7 +44,7 @@ class GameIndividualPageFragment(val player: Player) : Fragment() {
        // binding.scoreboard.adapter = IndividualScoreboardAdapter(viewModel.game.scoreBook!![player]!!)
 
 
-        viewModel.liveScoreBook.observe(viewLifecycleOwner) { updateScores() }
+        viewModel.game.observe(viewLifecycleOwner) { updateScores() }
 
 
 

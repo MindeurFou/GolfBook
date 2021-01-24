@@ -28,5 +28,6 @@ object LoungeRepository {
 
     fun refuseStart(loungeId: String) = remoteLoungeDataSource.refuseStart(loungeId)
 
+    fun setGameId(loungeId: String, gameId: String) = remoteLoungeDataSource.setGameId(loungeId, gameId)
 
 }

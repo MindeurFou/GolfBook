@@ -10,11 +10,38 @@ object RemoteLoungeMapper : EntityMapper<FirestoreLoungeEntity, Lounge> {
     private val remotePlayerMapper = RemotePlayerMapper
 
     override fun mapFromEntity(entity: FirestoreLoungeEntity): Lounge {
-        return Lounge()
+
+        var listPlayersInLounge: MutableList<Player>? = null
+
+        entity.playersInLounge?.let {
+
+            listPlayersInLounge = mutableListOf()
+
+            for (playerEntity in it) {
+                listPlayersInLounge!!.add(remotePlayerMapper.mapFromEntity(playerEntity))
+            }
+        }
+
+        return Lounge(
+                loungeId = null,
+                name = entity.name,
+                playersInLounge = listPlayersInLounge,
+                state = entity.state,
+                courseName = entity.courseName
+        )
+
     }
 
     override fun mapToEntity(domainModel: Lounge): FirestoreLoungeEntity {
-        return FirestoreLoungeEntity()
+
+        val playersInLounge = domainModel.playersInLounge!!.map { remotePlayerMapper.mapToEntity(it) }
+
+        return FirestoreLoungeEntity(
+                courseName = domainModel.courseName,
+                name = domainModel.courseName,
+                state = domainModel.state,
+                playersInLounge = playersInLounge
+        )
     }
 
     fun mapFromEntityWithId(entity: FirestoreLoungeEntity, loungeId: String) : Lounge {
