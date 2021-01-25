@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.golfbook.R
 import com.example.golfbook.data.model.Hole
+import com.example.golfbook.extensions.ViewExtensions.textChanges
 import com.google.android.material.textfield.TextInputEditText
 
 class IndividualRecyclerViewViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -18,8 +20,10 @@ class IndividualRecyclerViewViewHolder(itemView: View): RecyclerView.ViewHolder(
 }
 
 class IndividualScoreboardAdapter(
-    private val playerScores: Map<Hole, Int>
+        private val onTextChange: (String) -> Unit
 ) : RecyclerView.Adapter<IndividualRecyclerViewViewHolder>() {
+
+    private var playerScores: List<Pair<Int, Int?>>? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -33,34 +37,36 @@ class IndividualScoreboardAdapter(
 
     override fun onBindViewHolder(holder: IndividualRecyclerViewViewHolder, position: Int) {
 
-        val holePair = getHoleByNumber(position+1)
+        playerScores?.let {
 
-        holePair?.let {
+            val columnData = it[position]
 
-            holder.holeNumber.text = it.first.holeNumber.toString()
-            holder.parNumber.text = it.first.par.toString()
+            holder.holeNumber.text = (position+1).toString()
+            holder.parNumber.text = columnData.first.toString()
 
-            if (it.second != -1) { //-1 correspond à score pas encore rempli
-                holder.scoreEditText.setText(it.second.toString())
+            if (columnData.second != null){
+                holder.scoreEditText.setText(columnData.second!!.toString())
             }
-        }
 
-    }
-
-    override fun getItemCount(): Int = playerScores.size
-
-    private fun getHoleByNumber(holeNumber: Int) : Pair<Hole, Int>? {
-
-        for (score in playerScores) {
-
-            if (score.key.holeNumber == holeNumber) {
-                return Pair(score.key, score.value)
+            holder.scoreEditText.addTextChangedListener { text ->
+                text?.let {
+                    onTextChange(text.toString())
+                }
             }
+
 
         }
 
-        return null
+
     }
+
+    override fun getItemCount(): Int = playerScores?.size ?: 0
+
+    fun updateData(playerScores: List<Pair<Int, Int?>>) {
+        this.playerScores = playerScores
+        notifyDataSetChanged()
+    }
+
 
 
 }

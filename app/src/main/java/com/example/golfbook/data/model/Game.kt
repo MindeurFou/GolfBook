@@ -6,29 +6,7 @@ data class Game (
         var scoreBook: Map< String, List<Int?> >
     ) {
 
-
-
-
 /*
-    fun initScoreBook() {
-
-        val _scoreBook: MutableMap<Player, MutableMap<Hole, Int>> = mutableMapOf()
-
-        for (player in players) {
-
-            val _holeMap: MutableMap<Hole, Int> = mutableMapOf()
-
-            for (Hole in course.holes) {
-                _holeMap[Hole] = -1
-            }
-
-            _scoreBook[player] = _holeMap
-        }
-
-        scoreBook = _scoreBook
-
-        currentHole = course.holes[0]
-    }
 
     fun postScore(hole: Hole, player: Player, score: Int, wantToChange: Boolean) {
 

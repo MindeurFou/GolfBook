@@ -30,4 +30,6 @@ object LoungeRepository {
 
     fun setGameId(loungeId: String, gameId: String) = remoteLoungeDataSource.setGameId(loungeId, gameId)
 
+    fun freeLounge(loungeId: String) = remoteLoungeDataSource.freeLounge(loungeId)
+
 }

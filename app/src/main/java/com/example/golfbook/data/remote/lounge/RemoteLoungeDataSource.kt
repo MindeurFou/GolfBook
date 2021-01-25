@@ -3,7 +3,9 @@ package com.example.golfbook.data.remote.lounge
 import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.data.model.LoungeDetails
 import com.example.golfbook.data.model.Player
+import com.example.golfbook.data.remote.player.FirestorePlayerEntity
 import com.example.golfbook.utils.Resource
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -268,6 +270,17 @@ object RemoteLoungeDataSource {
         val loungeDetailsDocumentRef = loungeCollectionRef.document(loungeId).collection("loungeDetails").document("loungeDetails")
 
         loungeDetailsDocumentRef.update("gameId", gameId)
+    }
+
+
+    fun freeLounge(loungeId: String) {
+
+        val mapLounge = mapOf("courseName" to "", "playersInLounge" to listOf<FirestorePlayerEntity>(), "state" to "available")
+        loungeCollectionRef.document(loungeId).set(mapLounge, SetOptions.merge())
+
+        val mapLoungeDetails = mapOf("adminPlayer" to "", "playersReady" to listOf<String>(), "gameId" to "")
+        loungeCollectionRef.document(loungeId).collection("loungeDetails").document("loungeDetails").set(mapLoungeDetails)
+
     }
 
 

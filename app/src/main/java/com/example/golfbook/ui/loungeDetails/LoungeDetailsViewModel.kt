@@ -129,6 +129,7 @@ class LoungeDetailsViewModel(
 
     }
 
+    // appelée juste par le adminPlayer
     fun maybeLaunchGame() {
 
         if (lounge.value is Resource.Success && loungeDetails.value is Resource.Success) {

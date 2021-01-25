@@ -54,6 +54,10 @@
         <argument
             android:name="gameId"
             app:argType="string" />
+        <argument
+            android:name="loungeId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment

@@ -8,7 +8,9 @@ object GameRepository {
 
     fun createGame(loungeId: String) = remoteGameDataSource.createGame(loungeId)
 
-    fun subscribeToGameScorebook(gameId: String, setLiveData: (Map<String, List<Int?>>) -> Unit) = remoteGameDataSource.subscribeToGame(gameId, setLiveData)
+    fun subscribeToGameScorebook( gameId: String, setLiveData: (Map<String, List<Int?>>) -> Unit) = remoteGameDataSource.subscribeToGame(gameId, setLiveData)
 
-    fun getInitialGame() = remoteGameDataSource.getInitialGame()
+    fun getInitialGame(gameId: String) = remoteGameDataSource.getInitialGame(gameId)
+
+    fun putScore(gameId: String) = remoteGameDataSource.putScore(gameId)
 }

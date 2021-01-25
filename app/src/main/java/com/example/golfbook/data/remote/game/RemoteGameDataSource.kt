@@ -23,7 +23,7 @@ object RemoteGameDataSource {
 
     private val firestore = Firebase.firestore
 
-    private lateinit var gameRef: DocumentReference
+    private val gameCollectionRef = firestore.collection("game")
 
     private val remoteLoungeMapper = RemoteLoungeMapper
     private val remoteCourseMapper = RemoteCourseMapper
@@ -102,11 +102,7 @@ object RemoteGameDataSource {
     }
 
 
-    fun subscribeToGame(gameId: String, setLiveData: (Map<String, List<Int?>>) -> Unit) : ListenerRegistration {
-
-        gameRef = firestore.collection("game").document(gameId)
-
-        return gameRef.addSnapshotListener { querySnapshot, _ ->
+    fun subscribeToGame(gameId: String, setLiveData: (Map<String, List<Int?>>) -> Unit)  = gameCollectionRef.document(gameId).addSnapshotListener { querySnapshot, _ ->
 
             querySnapshot?.let {
 
@@ -116,18 +112,17 @@ object RemoteGameDataSource {
                     firestoreGameEntity.scorebook?.let(setLiveData)
                 }
             }
-
-        }
-
     }
 
-    fun getInitialGame() : Flow<Resource<Game>> = flow {
+
+
+    fun getInitialGame(gameId: String) : Flow<Resource<Game>> = flow {
 
         emit(Resource.Loading)
 
         try {
 
-            val gameDoc = gameRef.get().await()
+            val gameDoc = gameCollectionRef.document(gameId).get().await()
 
             val firestoreGameEntity = gameDoc.toObject<FirestoreGameEntity>()
 
@@ -153,7 +148,7 @@ object RemoteGameDataSource {
 
                         firestorePlayerEntity?.let {
 
-                            val player = remotePlayerMapper.mapFromEntity(firestorePlayerEntity)
+                            val player = remotePlayerMapper.mapFromEntityWithId(firestorePlayerEntity, querySnapshot.documents[0].id)
                             players.add(player)
 
                         }
@@ -169,7 +164,7 @@ object RemoteGameDataSource {
                     val game = Game(
                             players = players,
                             course = course!!,
-                            scoreBook = firestoreGameEntity.scorebook!!
+                            scoreBook = firestoreGameEntity.scorebook
                     )
 
                     emit(Resource.Success(game))
@@ -184,6 +179,10 @@ object RemoteGameDataSource {
         } catch (e: Exception) {
             emit(Resource.Failure(e))
         }
+    }
+
+    fun putScore(gameId: String) {
+
     }
 
 

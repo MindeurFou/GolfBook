@@ -9,6 +9,7 @@ import com.example.golfbook.ui.game.GameIndividualPageFragment
 
 class IndividualGameViewPagerAdapter(
     private val players: List<Player>,
+    private val gameId: String,
     fm: FragmentManager,
     lifecycle: Lifecycle
 ): FragmentStateAdapter(fm, lifecycle) {
@@ -17,6 +18,6 @@ class IndividualGameViewPagerAdapter(
     override fun getItemCount(): Int = players.size
 
     override fun createFragment(position: Int): Fragment {
-        return GameIndividualPageFragment(players[position])
+        return GameIndividualPageFragment(players[position], gameId)
     }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.golfbook.R
+import com.example.golfbook.data.model.Lounge
 import com.example.golfbook.databinding.FragmentLoungeDetailsBinding
 import com.example.golfbook.extensions.ExceptionExtensions.toast
 import com.example.golfbook.ui.ActivityViewModel
@@ -200,8 +201,25 @@ class LoungeDetailsFragment : Fragment() {
 
                 resource.data.gameId?.let {
 
-                    if (it.isNotBlank())
-                        navigateToGameFragment(it)
+                    if (viewModel.loungeDetails.value is Resource.Success) {
+
+                        if (it.isNotBlank()) {
+                            if (viewModel.localPlayerIsAdmin) {
+
+                                if (viewModel.lounge.value is Resource.Success) {
+
+                                    val loungeId = (viewModel.lounge.value as Resource.Success<Lounge>).data.loungeId!!
+
+                                    navigateToGameFragment(it, loungeId)
+                                }
+                            } else {
+                                navigateToGameFragment(it)
+                            }
+
+                        }
+
+                    }
+
                 }
             }
         }
@@ -255,8 +273,8 @@ class LoungeDetailsFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun navigateToGameFragment(gameId: String) {
-        val action = LoungeDetailsFragmentDirections.actionLoungeDetailsFragmentToGameViewPagerFragment(gameId)
+    private fun navigateToGameFragment(gameId: String, loungeId: String? = null) {
+        val action = LoungeDetailsFragmentDirections.actionLoungeDetailsFragmentToGameViewPagerFragment(gameId, loungeId)
         findNavController().navigate(action)
     }
 

@@ -70,4 +70,6 @@
     <string name="starting_dialog_decline">Non</string>
     <string name="starting_dialog_accept">Oui</string>
     <string name="joinGame">Rejoindre la partie</string>
+    <string name="hole">Trou</string>
+    <string name="par">Par</string>
 </resources>
