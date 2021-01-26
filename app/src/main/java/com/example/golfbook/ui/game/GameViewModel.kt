@@ -72,7 +72,7 @@ class GameViewModel() : ViewModel() {
         loungeRepo.freeLounge(loungeId)
     }
 
-    fun putScore() = gameRepo.putScore(gameId) // TODO
+    fun putScore(gameId: String, playerName: String, index: Int, score: Int) = gameRepo.putScore(gameId, playerName, index, score)
 
     override fun onCleared() {
         super.onCleared()

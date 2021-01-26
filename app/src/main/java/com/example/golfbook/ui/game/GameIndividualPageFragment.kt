@@ -18,6 +18,8 @@ import com.example.golfbook.extensions.ModelExtensions.getSortedLeaderboard
 import com.example.golfbook.ui.ActivityViewModel
 import com.example.golfbook.ui.adapters.IndividualScoreboardAdapter
 import com.example.golfbook.utils.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 
 class GameIndividualPageFragment(
@@ -46,8 +48,8 @@ class GameIndividualPageFragment(
         binding.scoreboard.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
 
-        binding.scoreboard.adapter = IndividualScoreboardAdapter {
-            //viewModel.putScore(player.playerId, it) TODO
+        binding.scoreboard.adapter = IndividualScoreboardAdapter(requireContext()) { index, score ->
+            viewModel.putScore(gameId, player.name, index, score)
         }
 
         viewModel.setGame(Resource.Success(mainViewModel.game!!))

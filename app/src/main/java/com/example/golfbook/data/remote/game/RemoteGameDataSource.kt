@@ -1,5 +1,7 @@
 package com.example.golfbook.data.remote.game
 
+import android.annotation.SuppressLint
+import android.util.Log
 import com.example.golfbook.data.model.Course
 import com.example.golfbook.data.model.Game
 import com.example.golfbook.data.model.Player
@@ -12,6 +14,7 @@ import com.example.golfbook.data.remote.player.RemotePlayerMapper
 import com.example.golfbook.utils.Resource
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -181,8 +184,36 @@ object RemoteGameDataSource {
         }
     }
 
-    fun putScore(gameId: String) {
+    @Suppress("UNCHECKED_CAST")
+    fun putScore(gameId: String, playerName: String, holeIndex: Int, score: Int) {
 
+        firestore.runTransaction { transaction ->
+
+            val gameRef = gameCollectionRef.document(gameId)
+
+            val gameDoc = transaction.get(gameRef)
+
+
+            val scorebook = (gameDoc["scorebook"] as Map<String, List<Int?>>).toMutableMap()
+
+
+
+            var playerScorebook = scorebook[playerName]?.toMutableList()
+
+            playerScorebook?.let {
+                it[holeIndex] = score
+
+                scorebook[playerName] = it
+            }
+
+            val scorebookMap = mapOf("scorebook" to scorebook as Map<String, List<Int?>>)
+
+            Log.d("mdebug", "scorebook updated : $scorebookMap")
+
+            transaction.set(gameRef,scorebookMap, SetOptions.merge())
+
+            null
+        }
     }
 
 

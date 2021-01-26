@@ -12,5 +12,5 @@ object GameRepository {
 
     fun getInitialGame(gameId: String) = remoteGameDataSource.getInitialGame(gameId)
 
-    fun putScore(gameId: String) = remoteGameDataSource.putScore(gameId)
+    fun putScore(gameId: String, playerName: String, index: Int, score: Int) = remoteGameDataSource.putScore(gameId, playerName, index, score)
 }
